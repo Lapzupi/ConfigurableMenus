@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>ConfigurableMenus</name>
-    <url>https://dev.lapzupi.com</url>
+    <url>http://dev.lapzupi.com</url>
 
     <description>A configurable menu plugin</description>
     <properties>
