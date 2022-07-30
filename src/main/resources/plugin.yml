@@ -1,0 +1,6 @@
+name: ConfigurableMenus
+version: '${project.version}'
+main: com.lapzupi.dev.configurablemenus.ConfigurableMenus
+api-version: 1.18
+description: A configurable menu plugin
+website: https://dev.lapzupi.com
