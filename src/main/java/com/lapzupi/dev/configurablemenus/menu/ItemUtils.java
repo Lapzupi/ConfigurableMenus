@@ -12,22 +12,23 @@ import org.bukkit.inventory.ItemStack;
  * @author sarhatabaot
  */
 public class ItemUtils {
+    private static final String PLUGIN_NAME = "ConfigurableMenus";
 
     public static ItemStack getFromHdb(final String id) throws NullPointerException {
-        ConfigurableMenusPlugin plugin = (ConfigurableMenusPlugin) Bukkit.getPluginManager().getPlugin("ConfigurableMenus");
+        ConfigurableMenusPlugin plugin = (ConfigurableMenusPlugin) Bukkit.getPluginManager().getPlugin(PLUGIN_NAME);
         HdbWrapper hdbWrapper = plugin.getHdbWrapper();
         HeadDatabaseAPI api = hdbWrapper.getApi();
         return api.getItemHead(id);
     }
 
     public static ItemStack getFromOraxen(final String id) {
-        ConfigurableMenusPlugin plugin = (ConfigurableMenusPlugin) Bukkit.getPluginManager().getPlugin("ConfigurableMenus");
+        ConfigurableMenusPlugin plugin = (ConfigurableMenusPlugin) Bukkit.getPluginManager().getPlugin(PLUGIN_NAME);
         OraxenWrapper oraxenWrapper = plugin.getOraxenWrapper();
         return oraxenWrapper.getItem(id);
     }
 
     public static ItemStack getFromItemsAdder(final String namespace, final String itemName) {
-        ConfigurableMenusPlugin plugin = (ConfigurableMenusPlugin) Bukkit.getPluginManager().getPlugin("ConfigurableMenus");
+        ConfigurableMenusPlugin plugin = (ConfigurableMenusPlugin) Bukkit.getPluginManager().getPlugin(PLUGIN_NAME);
         ItemsAdderWrapper itemsAdderWrapper = plugin.getItemsAdderWrapper();
         return itemsAdderWrapper.getItem(namespace,itemName);
     }
