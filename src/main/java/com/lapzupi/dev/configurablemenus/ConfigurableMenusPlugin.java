@@ -1,6 +1,7 @@
 package com.lapzupi.dev.configurablemenus;
 
 import co.aikar.commands.PaperCommandManager;
+import com.github.sarhatabaot.kraken.core.logging.LoggerUtil;
 import com.lapzupi.dev.configurablemenus.config.MenuConfigurate;
 import com.lapzupi.dev.configurablemenus.config.SettingsConfigurate;
 import com.lapzupi.dev.configurablemenus.hooks.HdbWrapper;
@@ -80,7 +81,8 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
                     menuManager.registerConfigurate(menu.getId(), menuConfigurate);
                 }
             } catch (ConfigurateException e) {
-                //
+                LoggerUtil.init(ConfigurableMenusPlugin.class);
+                LoggerUtil.logSevereException(e);
             }
         }
     }
@@ -88,7 +90,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
     private List<String> getFileNamesInMenusFolder() {
         File file = new File(getDataFolder(), "menus");
         if (file.isDirectory()) {
-            String[] fileNameList = file.list((dir, name) -> name.endsWith(".yml"));
+            String[] fileNameList = file.list((dir, name) -> name.endsWith(".conf"));
             if (fileNameList == null)
                 return Collections.emptyList();
             return List.of(fileNameList);
