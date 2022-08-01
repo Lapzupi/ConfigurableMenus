@@ -1,4 +1,4 @@
-package com.lapzupi.dev.configurablemenus.menu;
+package com.lapzupi.dev.configurablemenus.menu.model;
 
 import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui.guis.BaseGui;

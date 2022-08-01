@@ -1,76 +1,67 @@
-package com.lapzupi.dev.configurablemenus.menu;
+package com.lapzupi.dev.configurablemenus.menu.model;
 
+import com.lapzupi.dev.configurablemenus.menu.ItemUtils;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NBTListCompound;
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.GuiItem;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
  * @author sarhatabaot
  */
-public class MenuItem {
-    private final int row;
-    private final int index;
+public class ItemSettings {
     private String displayName;
-    private String materialString; //String so we can get ia/hdb stuff
+    private String materialString;
     private int amount;
-    private String duplicate;
     private Integer customModelData;
-    private List<String> onClick;
-    private List<String> onShiftClick;
 
-    public MenuItem(final int row, final int index, final String displayName, final String materialString, final int amount, final String duplicate, final int customModelData, final List<String> onClick) {
-        this.row = row;
-        this.index = index;
+    public ItemSettings(final String displayName, final String materialString, final int amount, final Integer customModelData) {
         this.displayName = displayName;
         this.materialString = materialString;
         this.amount = amount;
-        this.duplicate = duplicate;
         this.customModelData = customModelData;
-        this.onClick = onClick;
     }
 
-    public GuiItem getAsGuiItem() throws InvalidMaterialException {
-        ItemBuilder builder = ItemBuilder.from(getItemFromMaterialString())
-                .amount(amount);
-        if (!displayName.isEmpty()) {
-            builder.name(Component.text(displayName));
-        }
-        if (customModelData != null) {
-            builder.model(customModelData);
-        }
-
-        if (!onClick.isEmpty()) {
-
-        }
-
-        if (!onShiftClick.isEmpty()) {
-
-        }
-
-        return builder.asGuiItem();
+    public String getDisplayName() {
+        return displayName;
     }
 
+    public String getMaterialString() {
+        return materialString;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public Integer getCustomModelData() {
+        return customModelData;
+    }
+
+    /*
+    TODO
+    Consider abstracting this whole process, to make it accessible by adding "addons".
+    An addon will have a "prefix" i.e. "base64" or "itemsadder".
+    Add this feature once the plugin is more fully fledged out.
+     */
     @Contract(" -> new")
-    private @NotNull ItemStack getItemFromMaterialString() throws InvalidMaterialException {
+    public @NotNull ItemStack getItemFromMaterialString() throws MenuItem.InvalidMaterialException {
         if (materialString.contains("base64:")) {
             final String base64texture = materialString.split(":")[1];
             //test it's actually a valid base64 texture..
             return getFromBase64(base64texture);
         }
+
         if (materialString.contains("head:")) {
             final String playerName = materialString.split(":")[1];
             return getFromPlayerHead(playerName);
         }
+
         if (materialString.contains("hdb:")) {
             final String headId = materialString.split(":")[1];
             return getFromHdb(headId);
@@ -89,7 +80,7 @@ public class MenuItem {
 
         Material material = Material.matchMaterial(materialString);
         if (material == null) {
-            throw new InvalidMaterialException("Could not get material for %s".formatted(materialString));
+            throw new MenuItem.InvalidMaterialException("Could not get material for %s".formatted(materialString));
         }
         return new ItemStack(material);
     }
@@ -130,10 +121,23 @@ public class MenuItem {
         return nbti.getItem();
     }
 
+    public ItemSettings setDisplayName(final String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
 
-    public static class InvalidMaterialException extends Exception {
-        public InvalidMaterialException(final String message) {
-            super(message);
-        }
+    public ItemSettings setMaterialString(final String materialString) {
+        this.materialString = materialString;
+        return this;
+    }
+
+    public ItemSettings setAmount(final int amount) {
+        this.amount = amount;
+        return this;
+    }
+
+    public ItemSettings setCustomModelData(final Integer customModelData) {
+        this.customModelData = customModelData;
+        return this;
     }
 }
