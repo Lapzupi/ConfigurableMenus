@@ -50,7 +50,7 @@ public class ItemSettings {
     Add this feature once the plugin is more fully fledged out.
      */
     @Contract(" -> new")
-    public @NotNull ItemStack getItemFromMaterialString() throws MenuItem.InvalidMaterialException {
+    public @NotNull ItemStack getItem() throws MenuItem.InvalidMaterialException {
         if (materialString.contains("base64:")) {
             final String base64texture = materialString.split(":")[1];
             //test it's actually a valid base64 texture..

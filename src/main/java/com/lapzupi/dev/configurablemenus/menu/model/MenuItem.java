@@ -27,7 +27,7 @@ public class MenuItem {
     }
 
     public GuiItem getAsGuiItem() throws InvalidMaterialException {
-        ItemBuilder builder = ItemBuilder.from(settings.getItemFromMaterialString())
+        ItemBuilder builder = ItemBuilder.from(settings.getItem())
                 .amount(settings.getAmount());
         if (!settings.getDisplayName().isEmpty()) {
             builder.name(Component.text(settings.getDisplayName()));

@@ -1,15 +1,12 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
 import dev.triumphteam.gui.guis.BaseGui;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
 /**
  * @author sarhatabaot
- */
-/*todo, we could have Menu<T extends BaseGui> and then implement, GuiMenu extends Menu<Gui>
-PaginatedMenu extends Menu<PaginatedGui>
-StorageMenu extends Menu<StorageGui>
  */
 public abstract class Menu<T extends BaseGui> {
     protected final String id;
@@ -19,6 +16,8 @@ public abstract class Menu<T extends BaseGui> {
     protected int rows;
     private List<MenuItem> items;
     private List<MenuItem> fillers;
+
+    protected T gui;
     /*
     default action
     open action
@@ -33,14 +32,23 @@ public abstract class Menu<T extends BaseGui> {
         this.rows = rows;
         this.items = items;
         this.fillers = fillers;
+
+        this.gui = createGuiFromType();
     }
 
     public String getId() {
         return id;
     }
 
-    public abstract T getGuiFromType();
+    public abstract T createGuiFromType();
 
     public abstract Menu<T> getMenu();
 
+    public void openMenu(final Player player) {
+        gui.open(player);
+    }
+
+    public String getPermission() {
+        return permission;
+    }
 }

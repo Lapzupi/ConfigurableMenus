@@ -18,7 +18,7 @@ public class PaginatedMenu extends Menu<PaginatedGui> {
     }
 
     @Override
-    public PaginatedGui getGuiFromType() {
+    public PaginatedGui createGuiFromType() {
         return Gui.paginated()
                 .rows(rows)
                 .title(Component.text(title))

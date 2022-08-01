@@ -17,7 +17,7 @@ public class GuiMenu extends Menu<Gui> {
     }
 
     @Override
-    public Gui getGuiFromType() {
+    public Gui createGuiFromType() {
         return Gui.gui(type.getGuiType())
                 .rows(rows)
                 .title(Component.text(title))

@@ -18,7 +18,7 @@ public class StorageMenu extends Menu<StorageGui> {
     }
 
     @Override
-    public StorageGui getGuiFromType() {
+    public StorageGui createGuiFromType() {
         return Gui.storage()
                 .rows(rows)
                 .title(Component.text(title))
