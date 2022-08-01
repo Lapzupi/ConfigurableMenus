@@ -1,8 +1,12 @@
 name: ConfigurableMenus
 version: '${project.version}'
-main: com.lapzupi.dev.configurablemenus.ConfigurableMenus
+main: com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin
 api-version: 1.18
 description: A configurable menu plugin
 website: https://dev.lapzupi.com
 depend:
   - PlaceholderAPI
+libraries:
+  - net.kyori:adventure-api:${adventure.version}
+  - net.kyori:adventure-text-minimessage:${adventure.version}
+  - org.spongepowered:configurate-hocon:${configurate.version}

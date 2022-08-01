@@ -2,6 +2,7 @@ package com.lapzupi.dev.configurablemenus;
 
 import co.aikar.commands.PaperCommandManager;
 import com.lapzupi.dev.configurablemenus.config.MenuConfigurate;
+import com.lapzupi.dev.configurablemenus.config.SettingsConfigurate;
 import com.lapzupi.dev.configurablemenus.hooks.HdbWrapper;
 import com.lapzupi.dev.configurablemenus.hooks.ItemsAdderWrapper;
 import com.lapzupi.dev.configurablemenus.hooks.OraxenWrapper;
@@ -13,10 +14,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.spongepowered.configurate.ConfigurateException;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FilterReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 
 public final class ConfigurableMenusPlugin extends JavaPlugin {
+    private SettingsConfigurate settings;
     private MenuManager menuManager;
     private HdbWrapper hdbWrapper;
     private ItemsAdderWrapper itemsAdderWrapper;
@@ -24,6 +31,14 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        try {
+            this.settings = new SettingsConfigurate(this);
+        } catch (ConfigurateException e) {
+            //
+        }
+        if(this.settings.isLoadExampleMenus()) {
+
+        }
         registerListeners();
 
         this.menuManager = new MenuManager();
@@ -38,6 +53,18 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
     public void onReload() {
         loadMenus();
     }
+
+//    private List<String> getFileNamesFromJar() {
+//        try (InputStream inputStream = getResource("menus")) {
+//            try(FileReader reader = new FileReader(new InputStreamReader(inputStream))) {
+//
+//            }
+//
+//        } catch (IOException e) {
+//
+//            return Collections.emptyList();
+//        }
+//    }
 
     private void loadMenus() {
         for (String fileName : getFileNamesInMenusFolder()) {
