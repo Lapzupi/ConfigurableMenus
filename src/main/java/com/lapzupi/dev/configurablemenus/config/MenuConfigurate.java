@@ -11,6 +11,7 @@ import com.lapzupi.dev.configurablemenus.menu.model.MenuType;
 import com.lapzupi.dev.configurablemenus.menu.types.GuiMenu;
 import com.lapzupi.dev.configurablemenus.menu.types.PaginatedMenu;
 import com.lapzupi.dev.configurablemenus.menu.types.StorageMenu;
+import dev.triumphteam.gui.guis.BaseGui;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurateException;
@@ -45,7 +46,7 @@ public class MenuConfigurate extends HoconConfigurateFile<ConfigurableMenusPlugi
         loaderBuilder.defaultOptions(options -> options.serializers(builder ->
                 builder.registerExact(MenuType.class, new MenuTypeSerializer())
                         .registerExact(MenuItem.class, new MenuItemSerializer())
-                        .registerExact(Menu.class, new MenuSerializer())));
+                        .register(Menu.class, new MenuSerializer())));
     }
 
     @Override
@@ -57,7 +58,7 @@ public class MenuConfigurate extends HoconConfigurateFile<ConfigurableMenusPlugi
         return menu;
     }
 
-    public static class MenuSerializer implements TypeSerializer<Menu<?>> {
+    public static class MenuSerializer implements TypeSerializer<Menu> {
         private static final String ID = "id";
         private static final String PERMISSION = "permission";
         private static final String TITLE = "title";

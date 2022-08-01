@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * @author sarhatabaot
  */
+//Add static items option, ones that preserve across paginated pages..
 public class PaginatedMenu extends Menu<PaginatedGui> {
     public PaginatedMenu(final String id, final String permission, final String title, final int rows, final List<MenuItem> items, final List<MenuItem> fillers) {
         super(id, permission, title, MenuType.PAGINATED, rows, items, fillers);
@@ -22,6 +23,7 @@ public class PaginatedMenu extends Menu<PaginatedGui> {
         return Gui.paginated()
                 .rows(rows)
                 .title(Component.text(title))
+                .disableAllInteractions()
                 .create();
     }
 

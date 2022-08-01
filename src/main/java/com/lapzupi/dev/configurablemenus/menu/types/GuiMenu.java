@@ -21,6 +21,7 @@ public class GuiMenu extends Menu<Gui> {
         return Gui.gui(type.getGuiType())
                 .rows(rows)
                 .title(Component.text(title))
+                .disableAllInteractions()
                 .create();
     }
 
