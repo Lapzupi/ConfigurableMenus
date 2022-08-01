@@ -1,5 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu;
 
+import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import com.lapzupi.dev.configurablemenus.config.MenuConfigurate;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
 
@@ -11,10 +12,12 @@ import java.util.Set;
  * @author sarhatabaot
  */
 public class MenuManager {
+    private final ConfigurableMenusPlugin plugin;
     private final Map<String, MenuConfigurate> menuConfigurateMap;
     private final Map<String, Menu<?>> menuMap;
 
-    public MenuManager() {
+    public MenuManager(final ConfigurableMenusPlugin plugin) {
+        this.plugin = plugin;
         this.menuMap = new HashMap<>();
         this.menuConfigurateMap = new HashMap<>();
     }
@@ -29,6 +32,7 @@ public class MenuManager {
 
     public void registerMenu(final Menu<?> menu) {
         this.menuMap.put(menu.getId(), menu);
+        this.plugin.debug(menu.toString());
     }
 
     public void registerConfigurate(final String menuId, final MenuConfigurate configurate) {

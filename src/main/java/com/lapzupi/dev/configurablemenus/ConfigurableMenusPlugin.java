@@ -42,7 +42,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         }
         registerListeners();
 
-        this.menuManager = new MenuManager();
+        this.menuManager = new MenuManager(this);
         loadMenus();
 
         PaperCommandManager paperCommandManager = new PaperCommandManager(this);
@@ -138,5 +138,11 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
     public MenuManager getMenuManager() {
         return menuManager;
+    }
+
+    public void debug(final String message) {
+        if(settings.isDebug()) {
+            getLogger().info(() -> "DEBUG %s".formatted(message));
+        }
     }
 }

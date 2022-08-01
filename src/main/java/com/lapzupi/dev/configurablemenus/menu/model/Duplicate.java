@@ -1,5 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,6 +16,18 @@ public record Duplicate(int row, int rangeMin, int rangeMax) {
     }
 
     public static boolean isDuplicateString(final @NotNull String duplicate) {
+        if(duplicate.isEmpty())
+            return false;
         return duplicate.contains(":") && duplicate.contains("-");
+    }
+
+    @Contract(pure = true)
+    @Override
+    public @NotNull String toString() {
+        return "Duplicate{" +
+                "row=" + row +
+                ", rangeMin=" + rangeMin +
+                ", rangeMax=" + rangeMax +
+                '}';
     }
 }

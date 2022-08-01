@@ -48,7 +48,7 @@ public class MenuItem {
         if (!settings.getDisplayName().isEmpty()) {
             builder.name(Component.text(settings.getDisplayName()));
         }
-        if (settings.getCustomModelData() != null) {
+        if (settings.getCustomModelData() != -1) {
             builder.model(settings.getCustomModelData());
         }
 
@@ -56,7 +56,8 @@ public class MenuItem {
 
         if (!onLeftClick.isEmpty() || !onShiftClick.isEmpty() || !onRightClick.isEmpty()) {
             guiItem.setAction(event -> {
-                if(!(event.getWhoClicked() instanceof Player player)) {
+                event.setCancelled(true);
+                if (!(event.getWhoClicked() instanceof Player player)) {
                     return;
                 }
                 if (event.isShiftClick()) {
@@ -65,7 +66,7 @@ public class MenuItem {
                 }
 
                 if (event.isLeftClick()) {
-                    onClick(player,onLeftClick);
+                    onClick(player, onLeftClick);
                     return;
                 }
 
@@ -102,7 +103,7 @@ public class MenuItem {
     //todo
     private void openLink(final Player player, final String link) {
         if (PlaceholderAPI.containsPlaceholders(link)) {
-            ChatUtil.sendMessage(player,PlaceholderAPI.setPlaceholders(player, link));
+            ChatUtil.sendMessage(player, PlaceholderAPI.setPlaceholders(player, link));
             return;
         }
         player.sendMessage(link);
@@ -110,10 +111,10 @@ public class MenuItem {
 
     private void message(final Player player, final String message) {
         if (PlaceholderAPI.containsPlaceholders(message)) {
-            ChatUtil.sendMessage(player,PlaceholderAPI.setPlaceholders(player, message));
+            ChatUtil.sendMessage(player, PlaceholderAPI.setPlaceholders(player, message));
             return;
         }
-        ChatUtil.sendMessage(player,message);
+        ChatUtil.sendMessage(player, message);
     }
 
     public static class InvalidMaterialException extends Exception {
@@ -138,4 +139,16 @@ public class MenuItem {
         return duplicate;
     }
 
+    @Override
+    public String toString() {
+        return "MenuItem{" +
+                "row=" + row +
+                ", column=" + column +
+                ", settings=" + settings +
+                ", duplicate=" + duplicate +
+                ", onLeftClick=" + onLeftClick +
+                ", onShiftClick=" + onShiftClick +
+                ", onRightClick=" + onRightClick +
+                '}';
+    }
 }

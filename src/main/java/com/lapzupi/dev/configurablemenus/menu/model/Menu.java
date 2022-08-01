@@ -1,8 +1,11 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
+import com.github.sarhatabaot.kraken.core.logging.LoggerUtil;
 import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -41,6 +44,7 @@ public abstract class Menu<T extends BaseGui> {
             this.gui.setItem(menuItem.getRow(), menuItem.getColumn(), guiItem);
 
             if (menuItem.getDuplicate() != null) {
+
                 //"1:1-3,2:1-4"
                 for (Duplicate duplicate : menuItem.getDuplicate()) {
                     for (int i = duplicate.rangeMin(); i <= duplicate.rangeMax(); i++) {
@@ -68,5 +72,19 @@ public abstract class Menu<T extends BaseGui> {
 
     public String getPermission() {
         return permission;
+    }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "id='" + id + '\'' +
+                ", permission='" + permission + '\'' +
+                ", title='" + title + '\'' +
+                ", type=" + type +
+                ", rows=" + rows +
+                ", items=" + items +
+                ", fillers=" + fillers +
+                ", gui=" + gui +
+                '}';
     }
 }

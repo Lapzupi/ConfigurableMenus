@@ -34,6 +34,7 @@ public class MenuItemSerializer implements TypeSerializer<MenuItem> {
     public MenuItem deserialize(final Type type, final @NotNull ConfigurationNode node) throws SerializationException {
         final int row = node.node(ROW).getInt();
         final int index = node.node(INDEX).getInt();
+
         final List<String> onLeftClick = node.node(ON_LEFT_CLICK).getList(String.class);
         final List<String> onShiftClick = node.node(ON_SHIFT_CLICK).getList(String.class);
         final List<String> onRightClick = node.node(ON_RIGHT_CLICK).getList(String.class);
@@ -45,9 +46,9 @@ public class MenuItemSerializer implements TypeSerializer<MenuItem> {
         }
 
         final String displayName = node.node(DISPLAY_NAME).getString("");
-        final String materialString = node.node(MATERIAL).getString();
+        final String materialString = node.node(MATERIAL).getString("");
         final int amount = node.node(AMOUNT).getInt(1);
-        final Integer customModelData = node.node(CUSTOM_MODEL_DATA).get(Integer.class, (Integer) null);
+        final int customModelData = node.node(CUSTOM_MODEL_DATA).getInt(-1);
         final ItemSettings settings = new ItemSettings(displayName, materialString, amount, customModelData);
         return new MenuItem(row, index, settings, duplicates, onLeftClick, onShiftClick, onRightClick);
     }
