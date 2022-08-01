@@ -65,7 +65,7 @@ public class MenuConfigurate extends HoconConfigurateFile<ConfigurableMenusPlugi
         private static final String FILLERS = "fillers";
 
         @Override
-        public Menu<?> deserialize(final Type type, final ConfigurationNode node) throws SerializationException {
+        public Menu<?> deserialize(final Type type, final @NotNull ConfigurationNode node) throws SerializationException {
             final String id = node.node(ID).getString();
             final String permission = node.node(PERMISSION).getString("menus." + id);
             final String title = node.node(TITLE).getString("");
@@ -93,7 +93,7 @@ public class MenuConfigurate extends HoconConfigurateFile<ConfigurableMenusPlugi
 
         @Override
         public void serialize(final Type type, @Nullable final Menu obj, final ConfigurationNode node) throws SerializationException {
-            //
+            //we don't use this
         }
     }
 
@@ -128,19 +128,19 @@ public class MenuConfigurate extends HoconConfigurateFile<ConfigurableMenusPlugi
 
         @Override
         public void serialize(final Type type, final @Nullable MenuItem obj, final ConfigurationNode node) throws SerializationException {
-            //
+            //we don't use this
         }
     }
 
     public static class MenuTypeSerializer implements TypeSerializer<MenuType> {
         @Override
-        public MenuType deserialize(final Type type, final ConfigurationNode node) throws SerializationException {
+        public MenuType deserialize(final Type type, final @NotNull ConfigurationNode node) throws SerializationException {
             return MenuType.valueOf(node.getString().toUpperCase());
         }
 
         @Override
         public void serialize(final Type type, @Nullable final MenuType obj, final ConfigurationNode node) throws SerializationException {
-
+            //we don't use this
         }
     }
 }
