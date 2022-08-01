@@ -1,8 +1,14 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
+import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -11,23 +17,33 @@ import java.util.List;
  */
 public class MenuItem {
     private final int row;
-    private final int index;
+    private final int column;
     private ItemSettings settings;
-    private String duplicate;
-    private List<String> onClick;
+    private List<Duplicate> duplicate;
+    private List<String> onLeftClick;
     private List<String> onShiftClick;
+    private List<String> onRightClick;
 
-    public MenuItem(final int row, final int index, final ItemSettings settings, final String duplicate, final List<String> onClick, final List<String> onShiftClick) {
+    public MenuItem(final int row, final int column, final ItemSettings settings, final List<Duplicate> duplicate, final List<String> onLeftClick, final List<String> onShiftClick, final List<String> onRightClick) {
         this.row = row;
-        this.index = index;
+        this.column = column;
         this.settings = settings;
         this.duplicate = duplicate;
-        this.onClick = onClick;
+        this.onLeftClick = onLeftClick;
         this.onShiftClick = onShiftClick;
+        this.onRightClick = onRightClick;
     }
 
-    public GuiItem getAsGuiItem() throws InvalidMaterialException {
-        ItemBuilder builder = ItemBuilder.from(settings.getItem())
+    public GuiItem getAsGuiItem() {
+        ItemStack baseItemStack;
+        try {
+            baseItemStack = settings.getItem();
+        } catch (InvalidMaterialException e) {
+            //log
+            baseItemStack = new ItemStack(Material.PAPER);
+        }
+
+        ItemBuilder builder = ItemBuilder.from(baseItemStack)
                 .amount(settings.getAmount());
         if (!settings.getDisplayName().isEmpty()) {
             builder.name(Component.text(settings.getDisplayName()));
@@ -36,17 +52,69 @@ public class MenuItem {
             builder.model(settings.getCustomModelData());
         }
 
-        if (!onClick.isEmpty()) {
+        GuiItem guiItem = builder.asGuiItem();
 
+        if (!onLeftClick.isEmpty() || !onShiftClick.isEmpty() || !onRightClick.isEmpty()) {
+            guiItem.setAction(event -> {
+                if(!(event.getWhoClicked() instanceof Player player)) {
+                    return;
+                }
+                if (event.isShiftClick()) {
+                    onClick(player, onShiftClick);
+                    return;
+                }
+
+                if (event.isLeftClick()) {
+                    onClick(player,onLeftClick);
+                    return;
+                }
+
+                if (event.isRightClick()) {
+                    onClick(player, onRightClick);
+                }
+            });
         }
-
-        if (!onShiftClick.isEmpty()) {
-
-        }
-
-        return builder.asGuiItem();
+        return guiItem;
     }
 
+    //abstract this as well at some point, enabling people to add their own actions if they want.
+    private void onClick(final Player player, final List<String> actions) {
+        for (String string : actions) {
+            if (string.startsWith("command:")) {
+                runCommand(player, string.split(":")[1]);
+            } else if (string.startsWith("open-link:")) {
+                openLink(player, string.split(":")[1]);
+            } else if (string.startsWith("message:")) {
+                message(player, string.split(":")[1]);
+            }
+        }
+    }
+
+    private void runCommand(final Player player, final String command) {
+        if (PlaceholderAPI.containsPlaceholders(command)) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
+            return;
+        }
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+    }
+
+    //todo
+    private void openLink(final Player player, final String link) {
+        if (PlaceholderAPI.containsPlaceholders(link)) {
+            ChatUtil.sendMessage(player,PlaceholderAPI.setPlaceholders(player, link));
+            return;
+        }
+        player.sendMessage(link);
+    }
+
+    private void message(final Player player, final String message) {
+        if (PlaceholderAPI.containsPlaceholders(message)) {
+            ChatUtil.sendMessage(player,PlaceholderAPI.setPlaceholders(player, message));;
+            return;
+        }
+        ChatUtil.sendMessage(player,PlaceholderAPI.setPlaceholders(player, message));
+    }
 
     public static class InvalidMaterialException extends Exception {
         public InvalidMaterialException(final String message) {
@@ -58,15 +126,16 @@ public class MenuItem {
         return row;
     }
 
-    public int getIndex() {
-        return index;
+    public int getColumn() {
+        return column;
     }
 
     public ItemSettings getSettings() {
         return settings;
     }
 
-    public String getDuplicate() {
+    public List<Duplicate> getDuplicate() {
         return duplicate;
     }
+
 }

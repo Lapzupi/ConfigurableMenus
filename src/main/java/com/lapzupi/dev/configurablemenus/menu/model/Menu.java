@@ -1,6 +1,7 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
 import dev.triumphteam.gui.guis.BaseGui;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public abstract class Menu<T extends BaseGui> {
     close action
      */
 
-    public Menu(final String id, final String permission, final String title, final MenuType type, final int rows, final List<MenuItem> items, final List<MenuItem> fillers) {
+    public Menu(final String id, final String permission, final String title, final MenuType type, final int rows, final List<MenuItem> items, final List<MenuItem> fillers)  {
         this.id = id;
         this.permission = permission;
         this.title = title;
@@ -34,6 +35,23 @@ public abstract class Menu<T extends BaseGui> {
         this.fillers = fillers;
 
         this.gui = createGuiFromType();
+
+        for (MenuItem menuItem : items) {
+            GuiItem guiItem = menuItem.getAsGuiItem();
+            this.gui.setItem(menuItem.getRow(), menuItem.getColumn(), guiItem);
+
+            if (menuItem.getDuplicate() != null) {
+                //"1:1-3,2:1-4"
+                for (Duplicate duplicate : menuItem.getDuplicate()) {
+                    for (int i = duplicate.rangeMin(); i <= duplicate.rangeMax(); i++) {
+                        this.gui.setItem(duplicate.row(), i, guiItem);
+                    }
+                }
+            }
+
+        }
+
+        this.gui.getFiller().fill(fillers.stream().map(MenuItem::getAsGuiItem).toList());
     }
 
     public String getId() {

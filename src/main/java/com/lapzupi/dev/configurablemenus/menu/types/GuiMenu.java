@@ -28,4 +28,6 @@ public class GuiMenu extends Menu<Gui> {
     public Menu<Gui> getMenu() {
         return this;
     }
+
+
 }

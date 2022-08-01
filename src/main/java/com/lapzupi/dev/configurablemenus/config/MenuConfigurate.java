@@ -3,6 +3,7 @@ package com.lapzupi.dev.configurablemenus.config;
 import com.github.sarhatabaot.kraken.core.config.HoconConfigurateFile;
 import com.github.sarhatabaot.kraken.core.config.Transformation;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
+import com.lapzupi.dev.configurablemenus.menu.model.Duplicate;
 import com.lapzupi.dev.configurablemenus.menu.model.ItemSettings;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
 import com.lapzupi.dev.configurablemenus.menu.model.MenuItem;
@@ -18,6 +19,7 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -100,7 +102,8 @@ public class MenuConfigurate extends HoconConfigurateFile<ConfigurableMenusPlugi
     public static class MenuItemSerializer implements TypeSerializer<MenuItem> {
         private static final String ROW = "row";
         private static final String INDEX = "index";
-        private static final String ON_CLICK = "on-click";
+        private static final String ON_LEFT_CLICK = "on-left-click";
+        private static final String ON_RIGHT_CLICK = "on-right-click";
         private static final String ON_SHIFT_CLICK = "on-shift-click";
 
         private static final String DISPLAY_NAME = "display-name";
@@ -111,19 +114,25 @@ public class MenuConfigurate extends HoconConfigurateFile<ConfigurableMenusPlugi
 
 
         @Override
-        public MenuItem deserialize(final Type type, final ConfigurationNode node) throws SerializationException {
+        public MenuItem deserialize(final Type type, final @NotNull ConfigurationNode node) throws SerializationException {
             final int row = node.node(ROW).getInt();
             final int index = node.node(INDEX).getInt();
-            final List<String> onClick = node.node(ON_CLICK).getList(String.class);
+            final List<String> onLeftClick = node.node(ON_LEFT_CLICK).getList(String.class);
             final List<String> onShiftClick = node.node(ON_SHIFT_CLICK).getList(String.class);
-            final String duplicate = node.node(DUPLICATE).getString();
+            final List<String> onRightClick = node.node(ON_RIGHT_CLICK).getList(String.class);
+
+            final List<Duplicate> duplicates = new ArrayList<>();
+            for (String string : node.node(DUPLICATE).getString("").split(",")) {
+                if (Duplicate.isDuplicateString(string))
+                    duplicates.add(Duplicate.fromString(string));
+            }
 
             final String displayName = node.node(DISPLAY_NAME).getString("");
             final String materialString = node.node(MATERIAL).getString();
             final int amount = node.node(AMOUNT).getInt(1);
             final Integer customModelData = node.node(CUSTOM_MODEL_DATA).get(Integer.class, (Integer) null);
             final ItemSettings settings = new ItemSettings(displayName, materialString, amount, customModelData);
-            return new MenuItem(row, index, settings, duplicate, onClick, onShiftClick);
+            return new MenuItem(row, index, settings, duplicates, onLeftClick, onShiftClick, onRightClick);
         }
 
         @Override
@@ -135,7 +144,7 @@ public class MenuConfigurate extends HoconConfigurateFile<ConfigurableMenusPlugi
     public static class MenuTypeSerializer implements TypeSerializer<MenuType> {
         @Override
         public MenuType deserialize(final Type type, final @NotNull ConfigurationNode node) throws SerializationException {
-            return MenuType.valueOf(node.getString().toUpperCase());
+            return MenuType.valueOf(node.getString("CHEST").toUpperCase());
         }
 
         @Override
