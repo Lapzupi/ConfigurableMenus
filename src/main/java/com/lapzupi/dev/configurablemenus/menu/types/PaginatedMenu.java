@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * @author sarhatabaot
  */
+//todo not fully implemented
 //Add static items option, ones that preserve across paginated pages..
 public class PaginatedMenu extends Menu<PaginatedGui> {
     public PaginatedMenu(final String id, final String permission, final String title, final int rows, final List<MenuItem> items, final List<MenuItem> fillers) {
