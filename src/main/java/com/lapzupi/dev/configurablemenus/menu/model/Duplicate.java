@@ -3,10 +3,22 @@ package com.lapzupi.dev.configurablemenus.menu.model;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author sarhatabaot
  */
 public record Duplicate(int row, int rangeMin, int rangeMax) {
+    public static List<Duplicate> asListFromString(final @NotNull String duplicateList) {
+        final String[] duplicateStrings = duplicateList.split(",");
+        List<Duplicate> duplicates = new ArrayList<>();
+        for(String string : duplicateStrings) {
+            duplicates.add(Duplicate.fromString(string));
+        }
+
+        return duplicates;
+    }
     public static @NotNull Duplicate fromString(final @NotNull String duplicate) {
         final String[] array = duplicate.split(":");
         final int row = Integer.parseInt(array[0]);

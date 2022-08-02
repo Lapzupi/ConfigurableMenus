@@ -39,12 +39,7 @@ public class MenuItemSerializer implements TypeSerializer<MenuItem> {
         final List<String> onShiftClick = node.node(ON_SHIFT_CLICK).getList(String.class);
         final List<String> onRightClick = node.node(ON_RIGHT_CLICK).getList(String.class);
 
-        final List<Duplicate> duplicates = new ArrayList<>();
-        for (String string : node.node(DUPLICATE).getString("").split(",")) {
-            if (Duplicate.isDuplicateString(string))
-                duplicates.add(Duplicate.fromString(string));
-        }
-
+        final List<Duplicate> duplicates = Duplicate.asListFromString(node.node(DUPLICATE).getString(""));
         final String displayName = node.node(DISPLAY_NAME).getString("");
         final String materialString = node.node(MATERIAL).getString("");
         final int amount = node.node(AMOUNT).getInt(1);
