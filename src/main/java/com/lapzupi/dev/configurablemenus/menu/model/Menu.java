@@ -43,9 +43,7 @@ public abstract class Menu<T extends BaseGui> {
             GuiItem guiItem = menuItem.getAsGuiItem();
             this.gui.setItem(menuItem.getRow(), menuItem.getColumn(), guiItem);
 
-            if (menuItem.getDuplicate() != null) {
-
-                //"1:1-3,2:1-4"
+            if (menuItem.getDuplicate() != null && !menuItem.getDuplicate().isEmpty()) {
                 for (Duplicate duplicate : menuItem.getDuplicate()) {
                     for (int i = duplicate.rangeMin(); i <= duplicate.rangeMax(); i++) {
                         this.gui.setItem(duplicate.row(), i, guiItem);
