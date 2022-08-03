@@ -1,11 +1,9 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
-import com.github.sarhatabaot.kraken.core.logging.LoggerUtil;
 import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -28,7 +26,7 @@ public abstract class Menu<T extends BaseGui> {
     close action
      */
 
-    public Menu(final String id, final String permission, final String title, final MenuType type, final int rows, final List<MenuItem> items, final List<MenuItem> fillers)  {
+    public Menu(final String id, final String permission, final String title, final MenuType type, final int rows, final @NotNull List<MenuItem> items, final List<MenuItem> fillers) {
         this.id = id;
         this.permission = permission;
         this.title = title;
@@ -53,7 +51,9 @@ public abstract class Menu<T extends BaseGui> {
 
         }
 
-        this.gui.getFiller().fill(fillers.stream().map(MenuItem::getAsGuiItem).toList());
+        if (!fillers.isEmpty()) {
+            this.gui.getFiller().fill(fillers.stream().map(MenuItem::getAsGuiItem).toList());
+        }
     }
 
     public String getId() {
