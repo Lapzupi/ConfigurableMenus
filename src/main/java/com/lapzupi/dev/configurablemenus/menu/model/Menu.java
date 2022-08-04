@@ -2,6 +2,7 @@ package com.lapzupi.dev.configurablemenus.menu.model;
 
 import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.GuiItem;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -65,6 +66,12 @@ public abstract class Menu<T extends BaseGui> {
     public abstract Menu<T> getMenu();
 
     public void openMenu(final Player player) {
+        if(PlaceholderAPI.containsPlaceholders(gui.getTitle())) {
+            final String papiTitle = gui.getTitle();
+            gui.updateTitle(PlaceholderAPI.setPlaceholders(player,papiTitle));
+        }
+
+
         gui.open(player);
     }
 
