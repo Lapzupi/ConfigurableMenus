@@ -133,6 +133,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
     public void reload() {
         //reload the menus.
+        loadMenus();
         getLogger().info("Reloaded!");
     }
 
