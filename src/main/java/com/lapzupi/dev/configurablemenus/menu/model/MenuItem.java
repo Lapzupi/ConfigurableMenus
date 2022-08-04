@@ -2,12 +2,14 @@ package com.lapzupi.dev.configurablemenus.menu.model;
 
 import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -40,7 +42,7 @@ public class MenuItem {
             baseItemStack = settings.getItem();
         } catch (InvalidMaterialException e) {
             //log
-            baseItemStack = new ItemStack(Material.PAPER);
+            baseItemStack = new ItemStack(Material.AIR);
         }
 
         ItemBuilder builder = ItemBuilder.from(baseItemStack)
@@ -55,28 +57,40 @@ public class MenuItem {
         GuiItem guiItem = builder.asGuiItem();
 
         if (!onLeftClick.isEmpty() || !onShiftClick.isEmpty() || !onRightClick.isEmpty()) {
-            guiItem.setAction(event -> {
-                event.setCancelled(true);
-                if (!(event.getWhoClicked() instanceof Player player)) {
-                    return;
-                }
-                if (event.isShiftClick()) {
-                    onClick(player, onShiftClick);
-                    return;
-                }
+            guiItem.setAction(new ClickAction());
 
-                if (event.isLeftClick()) {
-                    onClick(player, onLeftClick);
-                    return;
-                }
-
-                if (event.isRightClick()) {
-                    onClick(player, onRightClick);
-                }
-            });
         }
         return guiItem;
     }
+
+    public class ClickAction implements GuiAction<InventoryClickEvent> {
+
+        @Override
+        public void execute(final InventoryClickEvent event) {
+            if(!(event.getWhoClicked() instanceof Player player)) {
+                return;
+            }
+            if(event.getClick().isLeftClick()) {
+                onClick(player, onLeftClick);
+                event.setCancelled(true);
+                return;
+            }
+
+            if(event.getClick().isRightClick()) {
+                onClick(player, onRightClick);
+                event.setCancelled(true);
+                return;
+            }
+
+            if(event.getClick().isShiftClick()) {
+                onClick(player, onShiftClick);
+                event.setCancelled(true);
+            }
+
+
+        }
+    }
+
 
     //abstract this as well at some point, enabling people to add their own actions if they want.
     private void onClick(final Player player, final List<String> actions) {
