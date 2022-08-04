@@ -11,6 +11,7 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,8 +35,8 @@ public abstract class AbstractMenuSerializer<T extends BaseGui> implements TypeS
         final String title = node.node(TITLE).getString("");
         final MenuType menuType = node.node(TYPE).get(MenuType.class, MenuType.CHEST);
         final int rows = node.node(ROWS).getInt(menuType.getGuiType().getLimit());
-        final List<MenuItem> items = node.node(ITEMS).getList(MenuItem.class);
-        final List<MenuItem> fillers = node.node(FILLERS).getList(MenuItem.class);
+        final List<MenuItem> items = node.node(ITEMS).getList(MenuItem.class, Collections.emptyList());
+        final List<MenuItem> fillers = node.node(FILLERS).getList(MenuItem.class, Collections.emptyList());
 
         return getMenu(id, permission, title, menuType, rows, items, fillers);
     }
