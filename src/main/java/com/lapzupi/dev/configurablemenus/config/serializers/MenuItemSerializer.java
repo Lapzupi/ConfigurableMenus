@@ -10,7 +10,6 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ import java.util.List;
  */
 public class MenuItemSerializer implements TypeSerializer<MenuItem> {
     private static final String ROW = "row";
-    private static final String INDEX = "index";
+    private static final String COLUMN = "column";
     private static final String ON_LEFT_CLICK = "on-left-click";
     private static final String ON_RIGHT_CLICK = "on-right-click";
     private static final String ON_SHIFT_CLICK = "on-shift-click";
@@ -33,7 +32,7 @@ public class MenuItemSerializer implements TypeSerializer<MenuItem> {
     @Override
     public MenuItem deserialize(final Type type, final @NotNull ConfigurationNode node) throws SerializationException {
         final int row = node.node(ROW).getInt();
-        final int index = node.node(INDEX).getInt();
+        final int index = node.node(COLUMN).getInt();
 
         final List<String> onLeftClick = node.node(ON_LEFT_CLICK).getList(String.class);
         final List<String> onShiftClick = node.node(ON_SHIFT_CLICK).getList(String.class);
