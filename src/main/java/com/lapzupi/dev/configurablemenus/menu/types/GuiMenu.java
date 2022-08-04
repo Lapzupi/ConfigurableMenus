@@ -1,5 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.types;
 
+import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
 import com.lapzupi.dev.configurablemenus.menu.model.MenuItem;
 import com.lapzupi.dev.configurablemenus.menu.model.MenuType;
@@ -20,7 +21,7 @@ public class GuiMenu extends Menu<Gui> {
     public Gui createGuiFromType() {
         return Gui.gui(type.getGuiType())
                 .rows(rows)
-                .title(Component.text(title))
+                .title(Component.text(ChatUtil.color(title)))
                 .create();
     }
 
