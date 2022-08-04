@@ -10,10 +10,12 @@ import java.util.List;
  * @author sarhatabaot
  */
 public record Duplicate(int row, int rangeMin, int rangeMax) {
-    public static List<Duplicate> asListFromString(final @NotNull String duplicateList) {
+    public static @NotNull List<Duplicate> asListFromString(final @NotNull String duplicateList) {
         final String[] duplicateStrings = duplicateList.split(",");
         List<Duplicate> duplicates = new ArrayList<>();
         for(String string : duplicateStrings) {
+            if(!Duplicate.isDuplicateString(string))
+                continue;
             duplicates.add(Duplicate.fromString(string));
         }
 
