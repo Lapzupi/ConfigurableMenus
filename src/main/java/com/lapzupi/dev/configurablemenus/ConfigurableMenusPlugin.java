@@ -15,11 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.spongepowered.configurate.ConfigurateException;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FilterReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.util.Collections;
 import java.util.List;
 
