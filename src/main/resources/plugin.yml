@@ -4,6 +4,8 @@ main: com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin
 api-version: 1.18
 description: A configurable menu plugin
 website: https://dev.lapzupi.com
+softdepend:
+  - ItemsAdder
 depend:
   - PlaceholderAPI
 libraries:
