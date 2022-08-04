@@ -3,6 +3,7 @@ package com.lapzupi.dev.configurablemenus.hooks;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.Events.ItemsAdderLoadDataEvent;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +25,11 @@ public class ItemsAdderWrapper implements Listener {
     }
 
     public ItemStack getItem(final String namespace, final String itemName) {
-        return CustomStack.getInstance(namespace + ":" + itemName).getItemStack();
+        try {
+            return CustomStack.getInstance(namespace + ":" + itemName).getItemStack();
+        } catch (NullPointerException e) {
+            this.plugin.debug("ItemsAdder not loaded yet, returning temporary AIR itemstack.");
+            return new ItemStack(Material.AIR);
+        }
     }
 }
