@@ -6,6 +6,8 @@ description: A configurable menu plugin
 website: https://dev.lapzupi.com
 softdepend:
   - ItemsAdder
+  - Oraxen
+  - HeadsDatabase
 depend:
   - PlaceholderAPI
 libraries:

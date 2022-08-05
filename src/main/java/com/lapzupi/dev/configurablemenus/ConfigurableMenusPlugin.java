@@ -51,18 +51,6 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         loadMenus();
     }
 
-//    private List<String> getFileNamesFromJar() {
-//        try (InputStream inputStream = getResource("menus")) {
-//            try(FileReader reader = new FileReader(new InputStreamReader(inputStream))) {
-//
-//            }
-//
-//        } catch (IOException e) {
-//
-//            return Collections.emptyList();
-//        }
-//    }
-
     private void loadMenus() {
         for (String fileName : getFileNamesInMenusFolder()) {
             try {
