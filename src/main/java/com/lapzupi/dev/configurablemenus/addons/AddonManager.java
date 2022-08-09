@@ -5,7 +5,6 @@ import me.clip.placeholderapi.util.FileUtil;
 import me.clip.placeholderapi.util.Futures;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -169,6 +168,9 @@ public class AddonManager {
                 Bukkit.getPluginManager().registerEvents(listener, plugin);
             }
         }
+    }
 
+    public Map<String, ItemAddon> getAddonMap() {
+        return addonMap;
     }
 }

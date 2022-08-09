@@ -3,6 +3,9 @@ package com.lapzupi.dev.configurablemenus;
 import co.aikar.commands.PaperCommandManager;
 import com.github.sarhatabaot.kraken.core.logging.LoggerUtil;
 import com.lapzupi.dev.configurablemenus.addons.AddonManager;
+import com.lapzupi.dev.configurablemenus.commands.AddonsCommand;
+import com.lapzupi.dev.configurablemenus.commands.MenuCommand;
+import com.lapzupi.dev.configurablemenus.commands.ReloadCommand;
 import com.lapzupi.dev.configurablemenus.config.MenuConfigurate;
 import com.lapzupi.dev.configurablemenus.config.SettingsConfigurate;
 import com.lapzupi.dev.configurablemenus.menu.MenuManager;
@@ -38,11 +41,18 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         this.menuManager = new MenuManager(this);
         loadMenus();
 
+        registerCommands();
+        // Plugin startup logic
+    }
+
+    private void registerCommands() {
         PaperCommandManager paperCommandManager = new PaperCommandManager(this);
         paperCommandManager.getCommandCompletions().registerCompletion("menus", c -> menuManager.getMenuIds());
         paperCommandManager.registerCommand(new MenuCommand(this));
-        // Plugin startup logic
+        paperCommandManager.registerCommand(new ReloadCommand(this));
+        paperCommandManager.registerCommand(new AddonsCommand(this));
     }
+
 
     public void onReload() {
         loadMenus();
@@ -84,7 +94,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
     }
-    
+
     public MenuManager getMenuManager() {
         return menuManager;
     }
