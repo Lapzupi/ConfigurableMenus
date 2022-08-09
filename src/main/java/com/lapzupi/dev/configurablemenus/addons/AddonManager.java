@@ -39,7 +39,12 @@ public class AddonManager {
 
     private Map<String, ItemAddon> addonMap;
 
-    public ItemStack getItemStack(final String prefix, final String id) {
+    public ItemStack getItemStack(final String prefix, final String id) throws NullPointerException {
+        ItemStack itemStack = addonMap.get(prefix).getItemStack(id);
+
+        if(itemStack == null)
+            throw new NullPointerException();
+
         return addonMap.get(prefix).getItemStack(id);
     }
 
@@ -75,15 +80,7 @@ public class AddonManager {
 
             return Optional.of(itemAddon);
         } catch (LinkageError | NullPointerException ex) {
-            final String reason;
-
-            if (ex instanceof LinkageError) {
-                reason = " (Is a dependency missing?)"; 
-            } else {
-                reason = " - One of its properties is null which is not allowed!";
-            }
-
-            plugin.getLogger().log(Level.SEVERE, "Failed to load addon class %s%s".formatted(addon.getSimpleName(), reason), ex);
+            plugin.getLogger().log(Level.SEVERE, "Failed to load addon class %s%s".formatted(addon.getSimpleName(), ex.getMessage()), ex);
         }
 
         return Optional.empty();

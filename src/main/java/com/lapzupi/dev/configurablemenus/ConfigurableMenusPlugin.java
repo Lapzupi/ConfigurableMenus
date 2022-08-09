@@ -2,6 +2,7 @@ package com.lapzupi.dev.configurablemenus;
 
 import co.aikar.commands.PaperCommandManager;
 import com.github.sarhatabaot.kraken.core.logging.LoggerUtil;
+import com.lapzupi.dev.configurablemenus.addons.AddonManager;
 import com.lapzupi.dev.configurablemenus.config.MenuConfigurate;
 import com.lapzupi.dev.configurablemenus.config.SettingsConfigurate;
 import com.lapzupi.dev.configurablemenus.hooks.HdbWrapper;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public final class ConfigurableMenusPlugin extends JavaPlugin {
     private SettingsConfigurate settings;
+    private AddonManager addonManager;
     private MenuManager menuManager;
     private HdbWrapper hdbWrapper;
     private ItemsAdderWrapper itemsAdderWrapper;
@@ -33,6 +35,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         } catch (ConfigurateException e) {
             //
         }
+
         if(this.settings.isLoadExampleMenus()) {
 
         }
@@ -129,5 +132,9 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         if(settings.isDebug()) {
             getLogger().info(() -> "DEBUG %s".formatted(message));
         }
+    }
+
+    public AddonManager getAddonManager() {
+        return addonManager;
     }
 }

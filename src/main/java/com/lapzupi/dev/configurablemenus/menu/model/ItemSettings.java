@@ -1,5 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
+import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import com.lapzupi.dev.configurablemenus.menu.ItemUtils;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -15,6 +16,7 @@ import java.util.UUID;
  * @author sarhatabaot
  */
 public class ItemSettings {
+    private ConfigurableMenusPlugin plugin;
     private String displayName;
     private String materialString;
     private int amount;
@@ -51,32 +53,40 @@ public class ItemSettings {
      */
     @Contract(" -> new")
     public @NotNull ItemStack getItem() throws MenuItem.InvalidMaterialException {
-        if (materialString.contains("base64:")) {
-            final String base64texture = materialString.split(":")[1];
-            //test it's actually a valid base64 texture..
-            return getFromBase64(base64texture);
-        }
-
-        if (materialString.contains("head:")) {
-            final String playerName = materialString.split(":")[1];
-            return getFromPlayerHead(playerName);
-        }
-
-        if (materialString.contains("hdb:")) {
-            final String headId = materialString.split(":")[1];
-            return getFromHdb(headId);
-        }
-
-        if (materialString.contains("itemsadder:")) {
-            final String namespace = materialString.split(":")[1];
-            final String itemName = materialString.split(":")[2];
-            return getFromItemsAdder(namespace, itemName);
-        }
-
-        if (materialString.contains("oraxen:")) {
+        if (materialString.contains(":")) {
+            final String prefix = materialString.split(":")[0];
             final String id = materialString.split(":")[1];
-            return getFromOraxen(id);
+            return this.plugin.getAddonManager().getItemStack(prefix,id);
+            //assume this is an addon string
         }
+
+
+//        if (materialString.contains("base64:")) {
+//            final String base64texture = materialString.split(":")[1];
+//            //test it's actually a valid base64 texture..
+//            return getFromBase64(base64texture);
+//        }
+//
+//        if (materialString.contains("head:")) {
+//            final String playerName = materialString.split(":")[1];
+//            return getFromPlayerHead(playerName);
+//        }
+//
+//        if (materialString.contains("hdb:")) {
+//            final String headId = materialString.split(":")[1];
+//            return getFromHdb(headId);
+//        }
+//
+//        if (materialString.contains("itemsadder:")) {
+//            final String namespace = materialString.split(":")[1];
+//            final String itemName = materialString.split(":")[2];
+//            return getFromItemsAdder(namespace, itemName);
+//        }
+//
+//        if (materialString.contains("oraxen:")) {
+//            final String id = materialString.split(":")[1];
+//            return getFromOraxen(id);
+//        }
 
         Material material = Material.matchMaterial(materialString);
         if (material == null) {

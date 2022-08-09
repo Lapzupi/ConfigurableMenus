@@ -1,6 +1,5 @@
 package com.lapzupi.dev.configurablemenus.addons;
 
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 /**
