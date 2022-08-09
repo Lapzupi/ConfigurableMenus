@@ -55,8 +55,8 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
 
     public void onReload() {
-        loadMenus();
         this.addonManager.load();
+        loadMenus();
     }
 
     private void loadMenus() {
