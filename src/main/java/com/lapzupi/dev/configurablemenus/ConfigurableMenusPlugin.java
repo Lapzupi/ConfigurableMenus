@@ -40,7 +40,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
         }
         registerListeners();
-
+        this.addonManager = new AddonManager(this);
         this.menuManager = new MenuManager(this);
         loadMenus();
 
