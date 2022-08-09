@@ -1,5 +1,6 @@
 package com.lapzupi.dev.configurablemenus.addons;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -15,7 +16,9 @@ public abstract class ItemAddon{
 
     public abstract String getPluginName();
 
-    public abstract boolean canRegister();
+    public boolean canRegister() {
+        return (Bukkit.getPluginManager().getPlugin(getPluginName()) != null);
+    }
 
     public abstract String getAuthor();
 

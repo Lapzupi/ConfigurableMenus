@@ -1,10 +1,10 @@
 package com.lapzupi.dev.configurablemenus.addons;
 
-import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import me.clip.placeholderapi.util.FileUtil;
 import me.clip.placeholderapi.util.Futures;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,23 +28,25 @@ public class AddonManager {
     private static final String ADDON_FOLDER = "addons";
     private final ConfigurableMenusPlugin plugin;
     private final File folder;
+    private Map<String, ItemAddon> addonMap;
 
     public AddonManager(final ConfigurableMenusPlugin plugin) {
         this.plugin = plugin;
         this.folder = new File(plugin.getDataFolder(), ADDON_FOLDER);
+        this.addonMap = new HashMap<>();
 
         if (!this.folder.exists() && !this.folder.mkdirs()) {
             plugin.getLogger().warning("Could not create addons folder.");
         }
     }
 
-    private Map<String, ItemAddon> addonMap;
 
-    public ItemStack getItemStack(final String prefix, final String id) throws NullPointerException {
-        ItemStack itemStack = addonMap.get(prefix).getItemStack(id);
 
-        if(itemStack == null)
-            throw new NullPointerException();
+    public ItemStack getItemStack(final String prefix, final String id) {
+        if(!addonMap.containsKey(prefix)) {
+            plugin.getLogger().warning("No such prefix %s, did you install the addon?".formatted(prefix));
+            return new ItemStack(Material.AIR);
+        }
 
         return addonMap.get(prefix).getItemStack(id);
     }
@@ -74,10 +77,15 @@ public class AddonManager {
             Objects.requireNonNull(itemAddon.getVersion(), "The expansion version is null!");
 
             if (!itemAddon.canRegister()) {
-                plugin.getLogger().warning("Cannot load expansion %s due to an unknown issue.".formatted(itemAddon.getPrefix()));
+                plugin.getLogger().warning(() -> "Cannot load expansion %s due to an unknown issue.".formatted(itemAddon.getPrefix()));
                 return Optional.empty();
             }
 
+            if(itemAddon instanceof Listener listener) {
+                Bukkit.getPluginManager().registerEvents(listener, plugin);
+            }
+
+            this.addonMap.put(itemAddon.getPrefix(),itemAddon);
             return Optional.of(itemAddon);
         } catch (LinkageError | NullPointerException ex) {
             plugin.getLogger().log(Level.SEVERE, "Failed to load addon class %s%s".formatted(addon.getSimpleName(), ex.getMessage()), ex);
@@ -104,6 +112,7 @@ public class AddonManager {
     public CompletableFuture<List<Class<? extends ItemAddon>>> findLocalAddons() {
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".jar"));
         if (files == null) {
+            plugin.debug("Could not find any files in folder %s".formatted(folder.getName()));
             return CompletableFuture.completedFuture(Collections.emptyList());
         }
 
@@ -133,7 +142,7 @@ public class AddonManager {
         });
     }
 
-    private void registerAll(@NotNull final CommandSender sender) {
+    private void registerAll() {
         Futures.onMainThread(plugin, findLocalAddons(), (classes, exception) -> {
             if (exception != null) {
                 plugin.getLogger().log(Level.SEVERE,"Failed to load class files of addon.", exception);
@@ -147,9 +156,19 @@ public class AddonManager {
                     .map(Optional::get)
                     .toList();
 
-            final String message = "%s addons registered!".formatted(registered.size());
 
-            ChatUtil.sendMessage(sender, message);
+            final String message = "%s addons registered!".formatted(registered.size());
+            plugin.getLogger().info(message);
         });
+    }
+
+    public void load() {
+        registerAll();
+        for(Map.Entry<String,ItemAddon> entry: addonMap.entrySet()) {
+            if(entry.getValue() instanceof Listener listener) {
+                Bukkit.getPluginManager().registerEvents(listener, plugin);
+            }
+        }
+
     }
 }

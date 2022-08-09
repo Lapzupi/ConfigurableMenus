@@ -25,14 +25,13 @@
         <adventure.version>4.11.0</adventure.version>
         <vault.api.version>1.7.1</vault.api.version>
         <papi.version>2.11.2</papi.version>
-        <hdb.api.version>1.3.1</hdb.api.version>
         <nbtapi.version>2.10.0</nbtapi.version>
         <bstats.version>3.0.0</bstats.version>
         <itemsadder.api.version>3.0.0</itemsadder.api.version>
         <kraken.core.version>1.5.5</kraken.core.version>
         <triumph.version>3.1.3</triumph.version>
         <configurate.version>4.1.2</configurate.version>
-        <oraxen.version>-86bffe910f-1</oraxen.version>
+
         <junit.version>5.8.2</junit.version>
     </properties>
 
@@ -165,18 +164,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.arcaniax</groupId>
-            <artifactId>HeadDatabase-API</artifactId>
-            <version>${hdb.api.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.LoneDev6</groupId>
-            <artifactId>api-itemsadder</artifactId>
-            <version>${itemsadder.api.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
             <version>0.5.1-SNAPSHOT</version>
@@ -210,12 +197,6 @@
             <groupId>org.spongepowered</groupId>
             <artifactId>configurate-hocon</artifactId>
             <version>${configurate.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.oraxen</groupId>
-            <artifactId>oraxen</artifactId>
-            <version>${oraxen.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
