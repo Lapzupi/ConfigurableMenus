@@ -1,6 +1,8 @@
 package com.lapzupi.dev.configurablemenus;
 
 import co.aikar.commands.PaperCommandManager;
+import com.github.sarhatabaot.kraken.core.config.ConfigFile;
+import com.github.sarhatabaot.kraken.core.config.HoconConfigurateFile;
 import com.github.sarhatabaot.kraken.core.logging.LoggerUtil;
 import com.lapzupi.dev.configurablemenus.addons.AddonManager;
 import com.lapzupi.dev.configurablemenus.commands.AddonsCommand;
@@ -11,14 +13,23 @@ import com.lapzupi.dev.configurablemenus.config.SettingsConfigurate;
 import com.lapzupi.dev.configurablemenus.menu.MenuManager;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurateException;
 
 import java.io.File;
 
+import java.io.IOException;
+import java.net.URL;
+import java.security.CodeSource;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public final class ConfigurableMenusPlugin extends JavaPlugin {
+    private static final String MENUS = "menus";
     private SettingsConfigurate settings;
     private AddonManager addonManager;
     private MenuManager menuManager;
@@ -32,17 +43,46 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
             //
         }
 
-        if(this.settings.isLoadExampleMenus()) {
-
-        }
-//        registerListeners();
         this.addonManager = new AddonManager(this);
         this.addonManager.load();
         this.menuManager = new MenuManager(this);
+
+        if (this.settings.extractedDefaultMenus()) {
+            File menuFolder = new File(getDataFolder(), MENUS);
+            for(String path: getFileNamesInJarMenusFolder()) {
+                debug("Path %s".formatted(path));
+                final String[] split = path.split("/");
+                final String resourcePath = split[0];
+                final String fileName = split[1];
+
+                FileUtil.saveFileFromJar(this,resourcePath + File.separator, fileName, menuFolder);
+            }
+        }
         loadMenus();
 
         registerCommands();
-        // Plugin startup logic
+    }
+
+    private @NotNull List<String> getFileNamesInJarMenusFolder() {
+        List<String> fileNames = new ArrayList<>();
+        CodeSource src = ConfigurableMenusPlugin.class.getProtectionDomain().getCodeSource();
+        if (src != null) {
+            URL jar = src.getLocation();
+            try(ZipInputStream zip = new ZipInputStream(jar.openStream())) {
+                while (true) {
+                    ZipEntry e = zip.getNextEntry();
+                    if (e == null)
+                        break;
+                    String name = e.getName();
+                    if (name.startsWith("menus/") && name.endsWith(".conf")) {
+                        fileNames.add(name);
+                    }
+                }
+            } catch (IOException e) {
+                //
+            }
+        }
+        return fileNames;
     }
 
     private void registerCommands() {
@@ -80,7 +120,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
     }
 
     private List<String> getFileNamesInMenusFolder() {
-        File file = new File(getDataFolder(), "menus");
+        File file = new File(getDataFolder(), MENUS);
         if (file.isDirectory()) {
             String[] fileNameList = file.list((dir, name) -> name.endsWith(".conf"));
             if (fileNameList == null)
@@ -100,8 +140,14 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
     }
 
     public void debug(final String message) {
-        if(settings.isDebug()) {
+        if (settings.isDebug()) {
             getLogger().info(() -> "DEBUG %s".formatted(message));
+        }
+    }
+
+    public void debug(final String message, final Throwable throwable) {
+        if (settings.isDebug()) {
+            getLogger().log(Level.INFO, "DEBUG %s".formatted(message), throwable);
         }
     }
 

@@ -22,7 +22,7 @@ public class SettingsConfigurate extends HoconConfigurateFile<ConfigurableMenusP
     protected void initValues() throws ConfigurateException {
         this.debug = rootNode.node("debug").getBoolean(false);
         this.version = rootNode.node("version").getInt();
-        this.loadExampleMenus = rootNode.node("load-example-menus").getBoolean(true);
+        this.loadExampleMenus = rootNode.node("extract-example-menus").getBoolean(true);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class SettingsConfigurate extends HoconConfigurateFile<ConfigurableMenusP
         return version;
     }
 
-    public boolean isLoadExampleMenus() {
+    public boolean extractedDefaultMenus() {
         return loadExampleMenus;
     }
 }

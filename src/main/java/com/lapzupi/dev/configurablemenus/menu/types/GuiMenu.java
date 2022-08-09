@@ -4,6 +4,7 @@ import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
 import com.lapzupi.dev.configurablemenus.menu.model.MenuItem;
 import com.lapzupi.dev.configurablemenus.menu.model.MenuType;
+import dev.triumphteam.gui.components.exception.GuiException;
 import dev.triumphteam.gui.guis.Gui;
 import net.kyori.adventure.text.Component;
 
@@ -13,7 +14,8 @@ import java.util.List;
  * @author sarhatabaot
  */
 public class GuiMenu extends Menu<Gui> {
-    public GuiMenu(final String id, final String permission, final String title, final MenuType type, final int rows, final List<MenuItem> items, final List<MenuItem> fillers) {
+
+    public GuiMenu(final String id, final String permission, final String title, final MenuType type, final int rows, final List<MenuItem> items, final List<MenuItem> fillers) throws GuiException {
         super(id, permission, title, type, rows, items, fillers);
     }
 

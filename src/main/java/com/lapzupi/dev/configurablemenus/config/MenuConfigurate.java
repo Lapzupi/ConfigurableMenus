@@ -3,7 +3,6 @@ package com.lapzupi.dev.configurablemenus.config;
 import com.github.sarhatabaot.kraken.core.config.HoconConfigurateFile;
 import com.github.sarhatabaot.kraken.core.config.Transformation;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
-import com.lapzupi.dev.configurablemenus.config.serializers.AbstractMenuSerializer;
 import com.lapzupi.dev.configurablemenus.config.serializers.GuiMenuSerializer;
 import com.lapzupi.dev.configurablemenus.config.serializers.MenuItemSerializer;
 import com.lapzupi.dev.configurablemenus.config.serializers.MenuTypeSerializer;

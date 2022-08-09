@@ -1,11 +1,14 @@
 package com.lapzupi.dev.configurablemenus.config.serializers;
 
+import com.lapzupi.dev.configurablemenus.menu.EmptyMenu;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
 import com.lapzupi.dev.configurablemenus.menu.model.MenuItem;
 import com.lapzupi.dev.configurablemenus.menu.model.MenuType;
+import dev.triumphteam.gui.components.exception.GuiException;
 import dev.triumphteam.gui.guis.BaseGui;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
@@ -26,7 +29,7 @@ public abstract class AbstractMenuSerializer<T extends BaseGui> implements TypeS
     protected static final String ITEMS = "items";
     protected static final String FILLERS = "fillers";
 
-    public abstract Menu<T> getMenu(final String id, final String permission, final String title, final MenuType menuType, final int rows, final List<MenuItem> items, final List<MenuItem> fillers);
+    public abstract Menu<T> getMenu(final String id, final String permission, final String title, final MenuType menuType, final int rows, final List<MenuItem> items, final List<MenuItem> fillers) throws GuiException;
 
     @Override
     public Menu<T> deserialize(final Type type, final @NotNull ConfigurationNode node) throws SerializationException {

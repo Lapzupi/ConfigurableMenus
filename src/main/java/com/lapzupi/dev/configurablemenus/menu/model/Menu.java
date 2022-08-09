@@ -1,5 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
+import dev.triumphteam.gui.components.exception.GuiException;
 import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -27,7 +28,7 @@ public abstract class Menu<T extends BaseGui> {
     close action
      */
 
-    public Menu(final String id, final String permission, final String title, final MenuType type, final int rows, final @NotNull List<MenuItem> items, final List<MenuItem> fillers) {
+    public Menu(final String id, final String permission, final String title, final MenuType type, final int rows, final @NotNull List<MenuItem> items, final List<MenuItem> fillers) throws GuiException {
         this.id = id;
         this.permission = permission;
         this.title = title;
