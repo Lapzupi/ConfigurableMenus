@@ -1,4 +1,4 @@
-package com.lapzupi.dev.configurablemenus;
+package com.lapzupi.dev.configurablemenus.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -7,6 +7,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
+import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import com.lapzupi.dev.configurablemenus.menu.MenuManager;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
 import org.bukkit.command.CommandSender;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author sarhatabaot
  */
-@CommandAlias("configurablemenus|cmenus")
+@CommandAlias(CommandsUtil.ALIAS)
 public class MenuCommand extends BaseCommand {
     private final ConfigurableMenusPlugin plugin;
     private final MenuManager menuManager;
@@ -53,13 +54,5 @@ public class MenuCommand extends BaseCommand {
         }
 
         menu.openMenu(onlinePlayer.getPlayer());
-    }
-
-    @Subcommand("reload")
-    @CommandPermission("cmenus.admin.reload")
-    public void onReload(final @NotNull CommandSender sender) {
-        plugin.onReload();
-        sender.sendMessage("Reloaded %s.".formatted(plugin.getName()));
-
     }
 }

@@ -2,15 +2,14 @@ package com.lapzupi.dev.configurablemenus;
 
 import co.aikar.commands.PaperCommandManager;
 import com.github.sarhatabaot.kraken.core.logging.LoggerUtil;
+import com.lapzupi.dev.configurablemenus.addons.AddonManager;
+import com.lapzupi.dev.configurablemenus.commands.AddonsCommand;
+import com.lapzupi.dev.configurablemenus.commands.MenuCommand;
+import com.lapzupi.dev.configurablemenus.commands.ReloadCommand;
 import com.lapzupi.dev.configurablemenus.config.MenuConfigurate;
 import com.lapzupi.dev.configurablemenus.config.SettingsConfigurate;
-import com.lapzupi.dev.configurablemenus.hooks.HdbWrapper;
-import com.lapzupi.dev.configurablemenus.hooks.ItemsAdderWrapper;
-import com.lapzupi.dev.configurablemenus.hooks.OraxenWrapper;
 import com.lapzupi.dev.configurablemenus.menu.MenuManager;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.spongepowered.configurate.ConfigurateException;
 
@@ -21,10 +20,9 @@ import java.util.List;
 
 public final class ConfigurableMenusPlugin extends JavaPlugin {
     private SettingsConfigurate settings;
+    private AddonManager addonManager;
     private MenuManager menuManager;
-    private HdbWrapper hdbWrapper;
-    private ItemsAdderWrapper itemsAdderWrapper;
-    private OraxenWrapper oraxenWrapper;
+
 
     @Override
     public void onEnable() {
@@ -33,21 +31,31 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         } catch (ConfigurateException e) {
             //
         }
+
         if(this.settings.isLoadExampleMenus()) {
 
         }
-        registerListeners();
-
+//        registerListeners();
+        this.addonManager = new AddonManager(this);
+        this.addonManager.load();
         this.menuManager = new MenuManager(this);
         loadMenus();
 
-        PaperCommandManager paperCommandManager = new PaperCommandManager(this);
-        paperCommandManager.getCommandCompletions().registerCompletion("menus", c -> menuManager.getMenuIds());
-        paperCommandManager.registerCommand(new MenuCommand(this));
+        registerCommands();
         // Plugin startup logic
     }
 
+    private void registerCommands() {
+        PaperCommandManager paperCommandManager = new PaperCommandManager(this);
+        paperCommandManager.getCommandCompletions().registerCompletion("menus", c -> menuManager.getMenuIds());
+        paperCommandManager.registerCommand(new MenuCommand(this));
+        paperCommandManager.registerCommand(new ReloadCommand(this));
+        paperCommandManager.registerCommand(new AddonsCommand(this));
+    }
+
+
     public void onReload() {
+        this.addonManager.load();
         loadMenus();
     }
 
@@ -87,40 +95,6 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public HdbWrapper getHdbWrapper() {
-        return hdbWrapper;
-    }
-
-    private void registerListeners() {
-        PluginManager pm = Bukkit.getPluginManager();
-        if (Bukkit.getPluginManager().getPlugin("HeadDatabase") != null) {
-            this.hdbWrapper = new HdbWrapper(this);
-            pm.registerEvents(this.hdbWrapper, this);
-        }
-        if (Bukkit.getPluginManager().getPlugin("Oraxen") != null) {
-            this.oraxenWrapper = new OraxenWrapper(this);
-            pm.registerEvents(this.oraxenWrapper, this);
-        }
-        if (Bukkit.getPluginManager().getPlugin("ItemsAdder") != null) {
-            this.itemsAdderWrapper = new ItemsAdderWrapper(this);
-            pm.registerEvents(this.itemsAdderWrapper, this);
-        }
-    }
-
-    public ItemsAdderWrapper getItemsAdderWrapper() {
-        return itemsAdderWrapper;
-    }
-
-    public OraxenWrapper getOraxenWrapper() {
-        return oraxenWrapper;
-    }
-
-    public void reload() {
-        //reload the menus.
-        loadMenus();
-        getLogger().info("Reloaded!");
-    }
-
     public MenuManager getMenuManager() {
         return menuManager;
     }
@@ -129,5 +103,9 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         if(settings.isDebug()) {
             getLogger().info(() -> "DEBUG %s".formatted(message));
         }
+    }
+
+    public AddonManager getAddonManager() {
+        return addonManager;
     }
 }
