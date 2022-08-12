@@ -1,8 +1,6 @@
 package com.lapzupi.dev.configurablemenus;
 
 import co.aikar.commands.PaperCommandManager;
-import com.github.sarhatabaot.kraken.core.config.ConfigFile;
-import com.github.sarhatabaot.kraken.core.config.HoconConfigurateFile;
 import com.github.sarhatabaot.kraken.core.logging.LoggerUtil;
 import com.lapzupi.dev.configurablemenus.addons.AddonManager;
 import com.lapzupi.dev.configurablemenus.commands.AddonsCommand;
