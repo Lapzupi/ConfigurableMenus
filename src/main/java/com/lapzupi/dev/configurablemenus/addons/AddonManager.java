@@ -5,6 +5,7 @@ import me.clip.placeholderapi.util.FileUtil;
 import me.clip.placeholderapi.util.Futures;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -156,7 +157,7 @@ public class AddonManager {
                     .toList();
 
 
-            final String message = "%s addons registered!".formatted(registered.size());
+            final String message = "%s new addons registered! (%s total)".formatted(registered.size(), addonMap.keySet().size());
             plugin.getLogger().info(message);
         });
     }
