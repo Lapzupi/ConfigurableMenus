@@ -97,6 +97,10 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         loadMenus();
     }
 
+    public void reloadMenus() {
+        loadMenus();
+    }
+
     private void loadMenus() {
         for (String fileName : getFileNamesInMenusFolder()) {
             try {
