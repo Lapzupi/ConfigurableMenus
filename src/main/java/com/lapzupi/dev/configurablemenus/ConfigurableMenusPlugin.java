@@ -10,7 +10,9 @@ import com.lapzupi.dev.configurablemenus.config.MenuConfigurate;
 import com.lapzupi.dev.configurablemenus.config.SettingsConfigurate;
 import com.lapzupi.dev.configurablemenus.menu.MenuManager;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurateException;
 
@@ -31,7 +33,15 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
     private SettingsConfigurate settings;
     private AddonManager addonManager;
     private MenuManager menuManager;
+    private BukkitAudiences adventure;
 
+
+    public @NonNull BukkitAudiences adventure() {
+        if(this.adventure == null) {
+            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+        }
+        return this.adventure;
+    }
 
     @Override
     public void onEnable() {
@@ -40,6 +50,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         } catch (ConfigurateException e) {
             //
         }
+        this.adventure = BukkitAudiences.create(this);
 
         this.addonManager = new AddonManager(this);
         this.addonManager.load();
@@ -85,7 +96,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
     private void registerCommands() {
         PaperCommandManager paperCommandManager = new PaperCommandManager(this);
-        paperCommandManager.getCommandCompletions().registerCompletion("menus", c -> menuManager.getMenuIds());
+        paperCommandManager.getCommandCompletions().registerCompletion(MENUS, c -> menuManager.getMenuIds());
         paperCommandManager.registerCommand(new MenuCommand(this));
         paperCommandManager.registerCommand(new ReloadCommand(this));
         paperCommandManager.registerCommand(new AddonsCommand(this));
@@ -134,7 +145,10 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        if(this.adventure != null) {
+            this.adventure.close();
+            this.adventure = null;
+        }
     }
 
     public MenuManager getMenuManager() {

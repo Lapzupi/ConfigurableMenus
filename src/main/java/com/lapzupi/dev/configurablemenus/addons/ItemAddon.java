@@ -45,7 +45,9 @@ public abstract class ItemAddon{
     /**
      * @return Return a link to the addons project page or download link
      */
-    public abstract String getUrl();
+    public String getUrl() {
+        return "";
+    }
 
     @Override
     public final String toString() {

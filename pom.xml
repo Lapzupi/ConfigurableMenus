@@ -23,6 +23,7 @@
 
         <paper.api.version>1.18-R0.1-SNAPSHOT</paper.api.version>
         <adventure.version>4.11.0</adventure.version>
+        <adventure.bukkit.version>4.1.2</adventure.bukkit.version>
         <vault.api.version>1.7.1</vault.api.version>
         <papi.version>2.11.2</papi.version>
         <nbtapi.version>2.10.0</nbtapi.version>
@@ -143,6 +144,12 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
             <version>${adventure.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>${adventure.bukkit.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
