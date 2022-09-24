@@ -6,7 +6,7 @@
 
     <groupId>com.lapzupi.dev</groupId>
     <artifactId>ConfigurableMenus</artifactId>
-    <version>0.1.2</version>
+    <version>0.2.0</version>
     <packaging>jar</packaging>
 
     <name>ConfigurableMenus</name>

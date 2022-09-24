@@ -6,7 +6,9 @@ import org.bukkit.inventory.ItemStack;
 /**
  * @author sarhatabaot
  */
-public abstract class ItemAddon{
+public abstract class ItemAddon {
+    private static final String EMPTY_URL = "";
+
     /**
      * @param id id of the ItemStack
      * @return The ItemStack via the id
@@ -46,7 +48,7 @@ public abstract class ItemAddon{
      * @return Return a link to the addons project page or download link
      */
     public String getUrl() {
-        return "";
+        return EMPTY_URL;
     }
 
     @Override
