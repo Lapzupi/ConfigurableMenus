@@ -6,23 +6,50 @@ import org.bukkit.inventory.ItemStack;
 /**
  * @author sarhatabaot
  */
-public abstract class ItemAddon{
+public abstract class ItemAddon {
+    private static final String EMPTY_URL = "";
+
+    /**
+     * @param id id of the ItemStack
+     * @return The ItemStack via the id
+     */
     public abstract ItemStack getItemStack(final String id);
 
     /**
-     * @return The prefix used by the addon: "playerhead:id" or "base64:id"
+     * @return The prefix used by the addon: "playerhead:id" or "base64:id in `prefix:id`"
      */
     public abstract String getPrefix();
 
+    /**
+     * @return The dependant plugin name, if there isn't one, you can set this to null.
+     * You should override {@link #canRegister() canRegister() method} if there is no dependant plugin.
+     */
     public abstract String getPluginName();
 
+
+    /**
+     * Can this addon be registered.
+     */
     public boolean canRegister() {
         return (Bukkit.getPluginManager().getPlugin(getPluginName()) != null);
     }
 
+    /**
+     * @return The author's name
+     */
     public abstract String getAuthor();
 
+    /**
+     * @return The addon's version
+     */
     public abstract String getVersion();
+
+    /**
+     * @return Return a link to the addons project page or download link
+     */
+    public String getUrl() {
+        return EMPTY_URL;
+    }
 
     @Override
     public final String toString() {

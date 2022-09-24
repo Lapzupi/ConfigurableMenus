@@ -12,5 +12,6 @@ depend:
   - PlaceholderAPI
 libraries:
   - net.kyori:adventure-api:${adventure.version}
+  - net.kyori:adventure-platform-bukkit:${adventure.bukkit.version}
   - net.kyori:adventure-text-minimessage:${adventure.version}
   - org.spongepowered:configurate-hocon:${configurate.version}
