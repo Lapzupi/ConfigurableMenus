@@ -5,7 +5,6 @@ import me.clip.placeholderapi.util.FileUtil;
 import me.clip.placeholderapi.util.Futures;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -28,12 +27,14 @@ public class AddonManager {
     private static final String ADDON_FOLDER = "addons";
     private final ConfigurableMenusPlugin plugin;
     private final File folder;
-    private Map<String, ItemAddon> addonMap;
+    private final Map<String, ItemAddon> addonMap;
+    private final Map<String, Boolean> loadingMap;
 
     public AddonManager(final ConfigurableMenusPlugin plugin) {
         this.plugin = plugin;
         this.folder = new File(plugin.getDataFolder(), ADDON_FOLDER);
         this.addonMap = new HashMap<>();
+        this.loadingMap = new HashMap<>();
 
         if (!this.folder.exists() && !this.folder.mkdirs()) {
             plugin.getLogger().warning("Could not create addons folder.");
@@ -44,7 +45,10 @@ public class AddonManager {
 
     public ItemStack getItemStack(final String prefix, final String id) {
         if(!addonMap.containsKey(prefix)) {
-            plugin.getLogger().warning("No such prefix %s, did you install the addon?".formatted(prefix));
+
+            if(!loadingMap.getOrDefault(prefix, true)) {
+                plugin.getLogger().warning(() -> "No such prefix %s, did you install the addon?".formatted(prefix));
+            }
             return new ItemStack(Material.AIR);
         }
 
@@ -53,9 +57,12 @@ public class AddonManager {
 
     public boolean registerAddon(final @NotNull ItemAddon addon) {
         final String prefix = addon.getPrefix().toLowerCase(Locale.ROOT);
-        if (!addon.canRegister())
+        if (!addon.canRegister()) {
+            this.loadingMap.put(prefix,true);
             return false;
+        }
 
+        this.loadingMap.put(prefix,false);
         this.addonMap.put(prefix, addon);
         if (addon instanceof Listener listener) {
             Bukkit.getPluginManager().registerEvents(listener, plugin);

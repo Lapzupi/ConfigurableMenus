@@ -125,6 +125,7 @@ public class MenuItem {
 
     private void message(final Player player, final String message) {
         if (PlaceholderAPI.containsPlaceholders(message)) {
+            //impl mini message
             ChatUtil.sendMessage(player, PlaceholderAPI.setPlaceholders(player, message));
             return;
         }
