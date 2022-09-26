@@ -47,9 +47,11 @@ public class MenuItem {
 
         ItemBuilder builder = ItemBuilder.from(baseItemStack)
                 .amount(settings.getAmount());
+
         if (!settings.getDisplayName().isEmpty()) {
             builder.name(Component.text(settings.getDisplayName()));
         }
+
         if (settings.getCustomModelData() != -1) {
             builder.model(settings.getCustomModelData());
         }
@@ -86,51 +88,55 @@ public class MenuItem {
                 onClick(player, onShiftClick);
                 event.setCancelled(true);
             }
-
-
         }
-    }
 
-
-    //abstract this as well at some point, enabling people to add their own actions if they want.
-    private void onClick(final Player player, final List<String> actions) {
-        for (String string : actions) {
-            if (string.startsWith("command:")) {
-                runCommand(player, string.split(":")[1]);
-            } else if (string.startsWith("open-link:")) {
-                openLink(player, string.split(":")[1]);
-            } else if (string.startsWith("message:")) {
-                message(player, string.split(":")[1]);
+        //abstract this as well at some point, enabling people to add their own actions if they want.
+        private void onClick(final Player player, final List<String> actions) {
+            for (String string : actions) {
+                if (string.startsWith("command:")) {
+                    runCommand(player, string.split(":")[1]);
+                } else if (string.startsWith("open-link:")) {
+                    openLink(player, string.split(":")[1]);
+                } else if (string.startsWith("message:")) {
+                    message(player, string.split(":")[1]);
+                }
             }
         }
-    }
 
-    private void runCommand(final Player player, final String command) {
-        if (PlaceholderAPI.containsPlaceholders(command)) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
-            return;
+        private void runCommand(final Player player, final String command) {
+            if (PlaceholderAPI.containsPlaceholders(command)) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
+                return;
+            }
+
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         }
 
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        //todo
+        private void openLink(final Player player, final String link) {
+            if (PlaceholderAPI.containsPlaceholders(link)) {
+                ChatUtil.sendMessage(player, PlaceholderAPI.setPlaceholders(player, link));
+                return;
+            }
+            player.sendMessage(link);
+        }
+
+        private void message(final Player player, final String message) {
+            if (PlaceholderAPI.containsPlaceholders(message)) {
+                //impl mini message
+                ChatUtil.sendMessage(player, PlaceholderAPI.setPlaceholders(player, message));
+                return;
+            }
+            ChatUtil.sendMessage(player, message);
+        }
     }
 
-    //todo
-    private void openLink(final Player player, final String link) {
-        if (PlaceholderAPI.containsPlaceholders(link)) {
-            ChatUtil.sendMessage(player, PlaceholderAPI.setPlaceholders(player, link));
-            return;
-        }
-        player.sendMessage(link);
-    }
 
-    private void message(final Player player, final String message) {
-        if (PlaceholderAPI.containsPlaceholders(message)) {
-            //impl mini message
-            ChatUtil.sendMessage(player, PlaceholderAPI.setPlaceholders(player, message));
-            return;
-        }
-        ChatUtil.sendMessage(player, message);
-    }
+
+
+
+
+
 
     public static class InvalidMaterialException extends Exception {
         public InvalidMaterialException(final String message) {

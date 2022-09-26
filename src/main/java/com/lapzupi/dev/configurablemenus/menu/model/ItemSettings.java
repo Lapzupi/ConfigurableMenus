@@ -57,6 +57,7 @@ public class ItemSettings {
         if (material == null) {
             throw new MenuItem.InvalidMaterialException("Could not get material for %s".formatted(materialString));
         }
+
         return new ItemStack(material);
     }
 
