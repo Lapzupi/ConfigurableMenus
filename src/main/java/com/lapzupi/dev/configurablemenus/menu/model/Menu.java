@@ -1,9 +1,12 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
+import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import dev.triumphteam.gui.components.exception.GuiException;
+import dev.triumphteam.gui.components.util.Legacy;
 import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,11 +70,23 @@ public abstract class Menu<T extends BaseGui> {
     public abstract Menu<T> getMenu();
 
     public void openMenu(final Player player) {
+        //PlaceholderAPI
         if(PlaceholderAPI.containsPlaceholders(gui.getTitle())) {
             final String papiTitle = gui.getTitle();
             gui.updateTitle(PlaceholderAPI.setPlaceholders(player,papiTitle));
         }
 
+        //MiniMessage
+        if(gui.getTitle().contains("<") || gui.getTitle().contains(">")) {
+            MiniMessage miniMessage = MiniMessage.miniMessage();
+            final String mmTitle = Legacy.SERIALIZER.serialize(miniMessage.deserialize(gui.getTitle()));
+            gui.updateTitle(mmTitle);
+        }
+
+        //LegacyFormatting
+        if(gui.getTitle().contains("&")) {
+            gui.updateTitle(ChatUtil.color(gui.getTitle()));
+        }
 
         gui.open(player);
     }
