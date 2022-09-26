@@ -48,7 +48,8 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         try {
             this.settings = new SettingsConfigurate(this);
         } catch (ConfigurateException e) {
-            //
+            getLogger().log(Level.SEVERE, e, () -> "There was problem loading the settings.conf file.");
+
         }
         this.adventure = BukkitAudiences.create(this);
 
@@ -112,6 +113,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
 
     public void onReload() {
+        this.settings.reloadConfig();
         this.addonManager.load();
         loadMenus();
     }

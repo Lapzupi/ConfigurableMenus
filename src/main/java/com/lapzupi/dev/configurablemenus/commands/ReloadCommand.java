@@ -3,6 +3,8 @@ package com.lapzupi.dev.configurablemenus.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import org.bukkit.command.CommandSender;
@@ -20,10 +22,23 @@ public class ReloadCommand extends BaseCommand {
     }
 
     @Subcommand("reload")
-    @CommandPermission("cmenus.admin.reload")
-    public void onReload(final @NotNull CommandSender sender) {
-        plugin.onReload();
-        sender.sendMessage("Reloaded %s.".formatted(plugin.getName()));
+    public class ReloadSubCommand extends BaseCommand {
 
+
+        @Subcommand("menus")
+        @Description("Reload just the menus.")
+        @CommandPermission("cmenus.admin.reload.menus")
+        public void onReloadMenus(final CommandSender sender) {
+            plugin.reloadMenus();
+        }
+
+        @Default
+        @Subcommand("plugin")
+        @Description("Reload the plugin & the menus.")
+        @CommandPermission("cmenus.admin.reload.plugin")
+        public void onReloadPlugin(final @NotNull CommandSender sender) {
+            plugin.onReload();
+            sender.sendMessage("Reloaded %s.".formatted(plugin.getName()));
+        }
     }
 }

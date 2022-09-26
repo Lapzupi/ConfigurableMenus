@@ -2,8 +2,8 @@ name: ConfigurableMenus
 version: '${project.version}'
 main: com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin
 api-version: 1.18
-description: A configurable menu plugin
-website: https://dev.lapzupi.com
+description: ${project.description}
+website: ${project.url}
 softdepend:
   - ItemsAdder
   - Oraxen
