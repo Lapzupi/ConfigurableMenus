@@ -1,6 +1,7 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
 import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
+import com.lapzupi.dev.configurablemenus.FormattingUtil;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -69,22 +70,22 @@ public class MenuItem {
 
         @Override
         public void execute(final InventoryClickEvent event) {
-            if(!(event.getWhoClicked() instanceof Player player)) {
+            if (!(event.getWhoClicked() instanceof Player player)) {
                 return;
             }
-            if(event.getClick().isLeftClick()) {
+            if (event.getClick().isLeftClick()) {
                 onClick(player, onLeftClick);
                 event.setCancelled(true);
                 return;
             }
 
-            if(event.getClick().isRightClick()) {
+            if (event.getClick().isRightClick()) {
                 onClick(player, onRightClick);
                 event.setCancelled(true);
                 return;
             }
 
-            if(event.getClick().isShiftClick()) {
+            if (event.getClick().isShiftClick()) {
                 onClick(player, onShiftClick);
                 event.setCancelled(true);
             }
@@ -104,38 +105,18 @@ public class MenuItem {
         }
 
         private void runCommand(final Player player, final String command) {
-            if (PlaceholderAPI.containsPlaceholders(command)) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
-                return;
-            }
-
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), FormattingUtil.format(player,command));
         }
 
         //todo
         private void openLink(final Player player, final String link) {
-            if (PlaceholderAPI.containsPlaceholders(link)) {
-                ChatUtil.sendMessage(player, PlaceholderAPI.setPlaceholders(player, link));
-                return;
-            }
-            player.sendMessage(link);
+            message(player,link);
         }
 
         private void message(final Player player, final String message) {
-            if (PlaceholderAPI.containsPlaceholders(message)) {
-                //impl mini message
-                ChatUtil.sendMessage(player, PlaceholderAPI.setPlaceholders(player, message));
-                return;
-            }
-            ChatUtil.sendMessage(player, message);
+            ChatUtil.sendMessage(player, FormattingUtil.format(player,message));
         }
     }
-
-
-
-
-
-
 
 
     public static class InvalidMaterialException extends Exception {
