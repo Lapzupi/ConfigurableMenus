@@ -32,8 +32,30 @@ public record Duplicate(int row, int rangeMin, int rangeMax) {
     public static boolean isDuplicateString(final @NotNull String duplicate) {
         if(duplicate.isEmpty())
             return false;
+
+        if (duplicate.contains(":") && duplicate.contains("-")) {
+            if(duplicate.contains(",")) {
+                final String[] split = duplicate.split(",");
+                for(String string: split) {
+                    if(!isDuplicateSectionString(string)) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isDuplicateSectionString(final @NotNull String duplicate) {
+        if(duplicate.isEmpty())
+            return false;
+
         return duplicate.contains(":") && duplicate.contains("-");
     }
+
 
     @Contract(pure = true)
     @Override
