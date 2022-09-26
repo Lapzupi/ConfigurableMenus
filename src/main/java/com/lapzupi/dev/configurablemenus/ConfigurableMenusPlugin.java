@@ -53,23 +53,31 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
         this.adventure = BukkitAudiences.create(this);
 
         this.addonManager = new AddonManager(this);
+
+        if (this.settings.extractedDefaultMenus()) {
+            extractDefaultMenus();
+        }
+
         this.addonManager.load();
         this.menuManager = new MenuManager(this);
 
-        if (this.settings.extractedDefaultMenus()) {
-            File menuFolder = new File(getDataFolder(), MENUS);
-            for(String path: getFileNamesInJarMenusFolder()) {
-                debug("Path %s".formatted(path));
-                final String[] split = path.split("/");
-                final String resourcePath = split[0];
-                final String fileName = split[1];
 
-                FileUtil.saveFileFromJar(this,resourcePath + File.separator, fileName, menuFolder);
-            }
-        }
+
         loadMenus();
 
         registerCommands();
+    }
+
+    private void extractDefaultMenus() {
+        File menuFolder = new File(getDataFolder(), MENUS);
+        for(String path: getFileNamesInJarMenusFolder()) {
+            debug("Path %s".formatted(path));
+            final String[] split = path.split("/");
+            final String resourcePath = split[0];
+            final String fileName = split[1];
+
+            FileUtil.saveFileFromJar(this,resourcePath + File.separator, fileName, menuFolder);
+        }
     }
 
     private @NotNull List<String> getFileNamesInJarMenusFolder() {
