@@ -5,13 +5,13 @@ import com.lapzupi.dev.configurablemenus.FormattingUtil;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.GuiItem;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -69,7 +69,7 @@ public class MenuItem {
     public class ClickAction implements GuiAction<InventoryClickEvent> {
 
         @Override
-        public void execute(final InventoryClickEvent event) {
+        public void execute(final @NotNull InventoryClickEvent event) {
             if (!(event.getWhoClicked() instanceof Player player)) {
                 return;
             }

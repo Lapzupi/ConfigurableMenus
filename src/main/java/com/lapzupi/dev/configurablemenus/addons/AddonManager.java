@@ -28,6 +28,7 @@ public class AddonManager {
     private final ConfigurableMenusPlugin plugin;
     private final File folder;
     private final Map<String, ItemAddon> addonMap;
+
     private final Map<String, Boolean> loadingMap;
 
     public AddonManager(final ConfigurableMenusPlugin plugin) {
@@ -85,6 +86,7 @@ public class AddonManager {
 
             if (!itemAddon.canRegister()) {
                 plugin.getLogger().warning(() -> "Cannot load expansion %s due to an unknown issue.".formatted(itemAddon.getPrefix()));
+                this.loadingMap.put(itemAddon.getPrefix(),true);
                 return Optional.empty();
             }
 
