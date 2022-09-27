@@ -29,13 +29,16 @@ class DuplicateTest {
 
     @Test
     void isDuplicateString() {
-        final String actualString = "1:1-2,2:3-4";
+        final String multipleString = "1:1-2,2:3-4";
+        final String singleString = "1:1-2";
         final String fakeString = "1:1";
         final String otherFakeString = "1:1,-";
 
-        assertTrue(Duplicate.isDuplicateString(actualString));
-        assertFalse(Duplicate.isDuplicateString(fakeString));
 
+        assertTrue(Duplicate.isDuplicateString(multipleString));
+        assertTrue(Duplicate.isDuplicateString(singleString));
+
+        assertFalse(Duplicate.isDuplicateString(fakeString));
         assertFalse(Duplicate.isDuplicateString(otherFakeString));
     }
 }
