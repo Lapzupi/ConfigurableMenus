@@ -1,0 +1,10 @@
+{
+  "CM-Playerhead-Addon": {
+    "url": "https://github.com/Lapzupi/CM-Playerhead-Addon",
+    "version": "1.0.1"
+  },
+  "CM-Base64-Addon":{
+    "url": "https://github.com/Lapzupi/CM-Base64-Addon",
+    "version": "1.0.1"
+  }
+}
