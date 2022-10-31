@@ -11,6 +11,9 @@ import org.jetbrains.annotations.NotNull;
  * @author sarhatabaot
  */
 public class FormattingUtil {
+    private FormattingUtil(){
+        throw new UnsupportedOperationException();
+    }
 
     public static @NotNull String format(final Player player, final String text) {
         String finalText = text;
