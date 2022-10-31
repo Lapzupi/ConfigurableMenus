@@ -1,13 +1,9 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
-import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import com.lapzupi.dev.configurablemenus.FormattingUtil;
 import dev.triumphteam.gui.components.exception.GuiException;
-import dev.triumphteam.gui.components.util.Legacy;
 import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.GuiItem;
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,8 +18,8 @@ public abstract class Menu<T extends BaseGui> {
     protected String title;
     protected final MenuType type;
     protected int rows;
-    private List<MenuItem> items;
-    private List<MenuItem> fillers;
+    private final List<MenuItem> items;
+    private final List<MenuItem> fillers;
 
     protected T gui;
     /*
@@ -32,7 +28,7 @@ public abstract class Menu<T extends BaseGui> {
     close action
      */
 
-    public Menu(final String id, final String permission, final String title, final MenuType type, final int rows, final @NotNull List<MenuItem> items, final List<MenuItem> fillers) throws GuiException {
+    protected Menu(final String id, final String permission, final String title, final MenuType type, final int rows, final @NotNull List<MenuItem> items, final List<MenuItem> fillers) throws GuiException {
         this.id = id;
         this.permission = permission;
         this.title = title;

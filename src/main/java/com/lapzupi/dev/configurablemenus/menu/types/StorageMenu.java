@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author sarhatabaot
  */
-//todo not fully implemented
+//todo not fully implemented, implementing using h2/sqlite + sql
 public class StorageMenu extends Menu<StorageGui> {
     public StorageMenu(final String id, final String permission, final String title, final int rows, final List<MenuItem> items, final List<MenuItem> fillers) {
         super(id, permission, title, MenuType.STORAGE, rows, items, fillers);
