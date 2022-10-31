@@ -14,6 +14,8 @@ public class SettingsConfigurate extends HoconConfigurateFile<ConfigurableMenusP
     private int version;
     private boolean loadExampleMenus;
 
+    private boolean downloadDefaultAddons;
+
     public SettingsConfigurate(@NotNull final ConfigurableMenusPlugin plugin) throws ConfigurateException {
         super(plugin, "", "settings.conf", "");
     }
@@ -23,6 +25,7 @@ public class SettingsConfigurate extends HoconConfigurateFile<ConfigurableMenusP
         this.debug = rootNode.node("debug").getBoolean(false);
         this.version = rootNode.node("version").getInt();
         this.loadExampleMenus = rootNode.node("extract-example-menus").getBoolean(true);
+        this.downloadDefaultAddons = rootNode.node("download-default-addons").getBoolean(true);
     }
 
     @Override
