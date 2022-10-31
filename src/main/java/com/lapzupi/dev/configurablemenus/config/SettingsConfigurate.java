@@ -49,4 +49,8 @@ public class SettingsConfigurate extends HoconConfigurateFile<ConfigurableMenusP
     public boolean extractedDefaultMenus() {
         return loadExampleMenus;
     }
+
+    public boolean downloadDefaultAddons() {
+        return downloadDefaultAddons;
+    }
 }
