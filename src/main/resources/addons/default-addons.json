@@ -6,5 +6,9 @@
   "CM-Base64-Addon":{
     "url": "https://github.com/Lapzupi/CM-Base64-Addon",
     "version": "1.0.1"
+  },
+  "CM-IA-Addon": {
+    "url": "https://github.com/Lapzupi/CM-IA-Addon",
+    "version": "1.0.2"
   }
 }
