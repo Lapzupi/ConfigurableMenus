@@ -1,6 +1,7 @@
 package com.lapzupi.dev.configurablemenus;
 
 import co.aikar.commands.PaperCommandManager;
+import com.github.sarhatabaot.kraken.core.file.FileUtil;
 import com.github.sarhatabaot.kraken.core.logging.LoggerUtil;
 import com.lapzupi.dev.configurablemenus.addons.AddonManager;
 import com.lapzupi.dev.configurablemenus.commands.AddonsCommand;
@@ -24,6 +25,8 @@ import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -71,7 +74,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
     private void extractDefaultMenus() {
         File menuFolder = new File(getDataFolder(), MENUS);
-        for(String path: getFileNamesInJarMenusFolder()) {
+        for(String path: FileUtil.getFileNamesInJarMenusFolder(this, zipEntry -> zipEntry.getName().startsWith("menus/") && zipEntry.getName().endsWith(".conf"))) {
             debug("Path %s".formatted(path));
             final String[] split = path.split("/");
             final String resourcePath = split[0];
@@ -79,28 +82,6 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
             FileUtil.saveFileFromJar(this,resourcePath + File.separator, fileName, menuFolder);
         }
-    }
-
-    private @NotNull List<String> getFileNamesInJarMenusFolder() {
-        List<String> fileNames = new ArrayList<>();
-        CodeSource src = ConfigurableMenusPlugin.class.getProtectionDomain().getCodeSource();
-        if (src != null) {
-            URL jar = src.getLocation();
-            try(ZipInputStream zip = new ZipInputStream(jar.openStream())) {
-                while (true) {
-                    ZipEntry e = zip.getNextEntry();
-                    if (e == null)
-                        break;
-                    String name = e.getName();
-                    if (name.startsWith("menus/") && name.endsWith(".conf")) {
-                        fileNames.add(name);
-                    }
-                }
-            } catch (IOException e) {
-                //
-            }
-        }
-        return fileNames;
     }
 
     private void registerCommands() {
