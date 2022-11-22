@@ -13,44 +13,48 @@ public record Duplicate(int row, int rangeMin, int rangeMax) {
     public static @NotNull List<Duplicate> asListFromString(final @NotNull String duplicateList) {
         final String[] duplicateStrings = duplicateList.split(",");
         List<Duplicate> duplicates = new ArrayList<>();
-        for(String string : duplicateStrings) {
-            if(!Duplicate.isDuplicateString(string))
+        for (String string : duplicateStrings) {
+            if (!Duplicate.isDuplicateString(string))
                 continue;
             duplicates.add(Duplicate.fromString(string));
         }
 
         return duplicates;
     }
+
     public static @NotNull Duplicate fromString(final @NotNull String duplicate) {
         final String[] array = duplicate.split(":");
         final int row = Integer.parseInt(array[0]);
         final int min = Integer.parseInt(array[1].split("-")[0]);
         final int max = Integer.parseInt(array[1].split("-")[1]);
-        return new Duplicate(row,min,max);
+        return new Duplicate(row, min, max);
     }
 
     public static boolean isDuplicateString(final @NotNull String duplicate) {
-        if(duplicate.isEmpty())
+        if (duplicate.isEmpty())
             return false;
-
-        if (duplicate.contains(":") && duplicate.contains("-")) {
-            if(duplicate.contains(",")) {
-                final String[] split = duplicate.split(",");
-                for(String string: split) {
-                    if(!isDuplicateSectionString(string)) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
+        
+        if (!duplicate.contains(":") || !duplicate.contains("-")) {
+            return false;
         }
 
-        return false;
+
+        if (duplicate.contains(",")) {
+            final String[] split = duplicate.split(",");
+            for (String string : split) {
+                if (!isDuplicateSectionString(string)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+
+
     }
 
     public static boolean isDuplicateSectionString(final @NotNull String duplicate) {
-        if(duplicate.isEmpty())
+        if (duplicate.isEmpty())
             return false;
 
         return duplicate.contains(":") && duplicate.contains("-");
