@@ -14,22 +14,13 @@ import com.lapzupi.dev.configurablemenus.menu.model.Menu;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurateException;
 
 import java.io.File;
 
-import java.io.IOException;
-import java.net.URL;
-import java.security.CodeSource;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Level;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public final class ConfigurableMenusPlugin extends JavaPlugin {
     private static final String MENUS = "menus";
@@ -74,7 +65,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
     private void extractDefaultMenus() {
         File menuFolder = new File(getDataFolder(), MENUS);
-        for(String path: FileUtil.getFileNamesInJarMenusFolder(this, zipEntry -> zipEntry.getName().startsWith("menus/") && zipEntry.getName().endsWith(".conf"))) {
+        for(String path: FileUtil.getFileNamesInJar(this, zipEntry -> zipEntry.getName().startsWith("menus/") && zipEntry.getName().endsWith(".conf"))) {
             debug("Path %s".formatted(path));
             final String[] split = path.split("/");
             final String resourcePath = split[0];

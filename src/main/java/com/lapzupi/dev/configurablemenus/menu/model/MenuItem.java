@@ -1,7 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
 import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
-import com.lapzupi.dev.configurablemenus.FormattingUtil;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -105,7 +104,7 @@ public class MenuItem {
         }
 
         private void runCommand(final Player player, final String command) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), FormattingUtil.format(player,command));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ChatUtil.format(player,command));
         }
 
         //todo
@@ -114,7 +113,7 @@ public class MenuItem {
         }
 
         private void message(final Player player, final String message) {
-            ChatUtil.sendMessage(player, FormattingUtil.format(player,message));
+            ChatUtil.sendMessage(player, ChatUtil.format(player,message));
         }
     }
 

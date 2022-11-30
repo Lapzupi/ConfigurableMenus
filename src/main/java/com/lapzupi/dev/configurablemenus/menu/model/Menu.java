@@ -1,6 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
-import com.lapzupi.dev.configurablemenus.FormattingUtil;
+import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import dev.triumphteam.gui.components.exception.GuiException;
 import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -67,7 +67,7 @@ public abstract class Menu<T extends BaseGui> {
     public abstract Menu<T> getMenu();
 
     public void openMenu(final Player player) {
-        final String guiTitle = FormattingUtil.format(player, gui.getTitle());
+        final String guiTitle = ChatUtil.format(player, gui.getTitle());
 
         gui.updateTitle(guiTitle);
         gui.open(player);

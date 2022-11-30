@@ -1,14 +1,11 @@
 {
   "CM-Playerhead-Addon": {
-    "url": "https://github.com/Lapzupi/CM-Playerhead-Addon",
-    "version": "1.0.1"
+    "url": "https://github.com/Lapzupi/CM-Playerhead-Addon"
   },
   "CM-Base64-Addon":{
-    "url": "https://github.com/Lapzupi/CM-Base64-Addon",
-    "version": "1.0.1"
+    "url": "https://github.com/Lapzupi/CM-Base64-Addon"
   },
   "CM-IA-Addon": {
-    "url": "https://github.com/Lapzupi/CM-IA-Addon",
-    "version": "1.0.2"
+    "url": "https://github.com/Lapzupi/CM-IA-Addon"
   }
 }

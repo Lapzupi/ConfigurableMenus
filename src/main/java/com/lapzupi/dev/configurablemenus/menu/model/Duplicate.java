@@ -33,7 +33,7 @@ public record Duplicate(int row, int rangeMin, int rangeMax) {
     public static boolean isDuplicateString(final @NotNull String duplicate) {
         if (duplicate.isEmpty())
             return false;
-        
+
         if (!duplicate.contains(":") || !duplicate.contains("-")) {
             return false;
         }
