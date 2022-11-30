@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author sarhatabaot
@@ -104,7 +105,8 @@ public class MenuItem {
         }
 
         private void runCommand(final Player player, final String command) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ChatUtil.format(player,command));
+            final String formattedCommand = ChatUtil.format(player,command);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedCommand);
         }
 
         //todo
