@@ -8,6 +8,7 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
 import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
+import com.lapzupi.dev.configurablemenus.addons.Addon;
 import com.lapzupi.dev.configurablemenus.addons.ItemAddon;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -36,7 +37,7 @@ public class AddonsCommand extends BaseCommand {
     @CommandPermission("cmenus.admin.addons")
     public void onAddons(final CommandSender sender) {
         List<Component> components = new ArrayList<>();
-        for (Map.Entry<String, ItemAddon> entry : plugin.getAddonManager().getAddonMap().entrySet()) {
+        for (Map.Entry<String, Addon> entry : plugin.getAddonManager().getAddonMap().entrySet()) {
             final TextComponent textComponent = Component.text()
                     .content(entry.getKey()).append(Component.text(" (v%s)".formatted(entry.getValue().getVersion())))
                     .hoverEvent(
