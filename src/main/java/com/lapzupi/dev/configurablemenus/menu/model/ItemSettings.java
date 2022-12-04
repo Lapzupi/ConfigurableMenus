@@ -1,5 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
+import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,7 +20,7 @@ public class ItemSettings {
     private int customModelData;
 
     public ItemSettings(final String displayName, final String materialString, final int amount, final int customModelData) {
-        this.displayName = displayName;
+        this.displayName = ChatUtil.color(displayName);
         this.materialString = materialString;
         this.amount = amount;
         this.customModelData = customModelData;
