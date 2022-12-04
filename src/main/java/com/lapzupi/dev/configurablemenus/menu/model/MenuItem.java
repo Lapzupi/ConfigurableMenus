@@ -1,6 +1,8 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
 import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
+import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
+import com.lapzupi.dev.configurablemenus.addons.ActionAddon;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -10,10 +12,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * @author sarhatabaot
@@ -67,6 +69,7 @@ public class MenuItem {
     }
 
     public class ClickAction implements GuiAction<InventoryClickEvent> {
+        private final ConfigurableMenusPlugin plugin = (ConfigurableMenusPlugin) JavaPlugin.getProvidingPlugin(ConfigurableMenusPlugin.class);
 
         @Override
         public void execute(final @NotNull InventoryClickEvent event) {
@@ -94,26 +97,34 @@ public class MenuItem {
         //abstract this as well at some point, enabling people to add their own actions if they want.
         private void onClick(final Player player, final List<String> actions) {
             for (String string : actions) {
-                if (string.startsWith("command:")) {
-                    runCommand(player, string.split(":")[1]);
-                } else if (string.startsWith("open-link:")) {
-                    openLink(player, string.split(":")[1]);
-                } else if (string.startsWith("message:")) {
-                    message(player, string.split(":")[1]);
+                final String prefix = string.split(":")[0];
+                final String args = string.split(":")[1];
+                ActionAddon actionAddon = this.plugin.getAddonManager().getActionAddon(prefix);
+                if(actionAddon != null) {
+                    actionAddon.onClick(player,args);
                 }
+//                if (string.startsWith("command:")) {
+//                    runCommand(player, string.split(":")[1]);
+//                } else if (string.startsWith("open-link:")) {
+//                    openLink(player, string.split(":")[1]);
+//                } else if (string.startsWith("message:")) {
+//                    message(player, string.split(":")[1]);
+//                }
             }
         }
 
+        @Deprecated(since = "0.2.1", forRemoval = true)
         private void runCommand(final Player player, final String command) {
             final String formattedCommand = ChatUtil.format(player,command);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedCommand);
         }
 
-        //todo
+        @Deprecated(since = "0.2.1", forRemoval = true)
         private void openLink(final Player player, final String link) {
             message(player,link);
         }
 
+        @Deprecated(since = "0.2.1", forRemoval = true)
         private void message(final Player player, final String message) {
             ChatUtil.sendMessage(player, ChatUtil.format(player,message));
         }

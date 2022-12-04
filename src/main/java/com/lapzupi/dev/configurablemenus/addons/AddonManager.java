@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +28,7 @@ public class AddonManager {
     private static final String ADDON_FOLDER = "addons";
     private final ConfigurableMenusPlugin plugin;
     private final File folder;
-    private final Map<String, ItemAddon> addonMap;
+    private final Map<String, Addon> addonMap;
 
     private final Map<String, Boolean> loadingMap;
 
@@ -43,27 +44,38 @@ public class AddonManager {
     }
 
 
-
     public ItemStack getItemStack(final String prefix, final String id) {
-        if(!addonMap.containsKey(prefix)) {
+        if (!addonMap.containsKey(prefix)) {
 
-            if(!loadingMap.getOrDefault(prefix, true)) {
+            if (!loadingMap.getOrDefault(prefix, true)) {
                 plugin.getLogger().warning(() -> "No such prefix %s, did you install the addon?".formatted(prefix));
             }
             return new ItemStack(Material.AIR);
         }
 
-        return addonMap.get(prefix).getItemStack(id);
+        final Addon addon = addonMap.get(prefix);
+        if (!(addon instanceof ItemAddon itemAddon)) {
+            return new ItemStack(Material.AIR);
+        }
+        return itemAddon.getItemStack(id);
     }
 
-    public boolean registerAddon(final @NotNull ItemAddon addon) {
+    @Nullable
+    public ActionAddon getActionAddon(final String prefix) {
+        Addon addon = this.addonMap.get(prefix);
+        if(addon instanceof ActionAddon actionAddon)
+            return actionAddon;
+        return null;
+    }
+
+    public boolean registerAddon(final @NotNull Addon addon) {
         final String prefix = addon.getPrefix().toLowerCase(Locale.ROOT);
         if (!addon.canRegister()) {
-            this.loadingMap.put(prefix,true);
+            this.loadingMap.put(prefix, true);
             return false;
         }
 
-        this.loadingMap.put(prefix,false);
+        this.loadingMap.put(prefix, false);
         this.addonMap.put(prefix, addon);
         if (addon instanceof Listener listener) {
             Bukkit.getPluginManager().registerEvents(listener, plugin);
@@ -72,30 +84,30 @@ public class AddonManager {
 
     }
 
-    public Optional<ItemAddon> registerAddon(final @NotNull Class<? extends ItemAddon> addon) {
+    public Optional<Addon> registerAddon(final @NotNull Class<? extends Addon> addon) {
         try {
-            final ItemAddon itemAddon = createAddonInstance(addon);
+            final Addon addonInstance = createAddonInstance(addon);
 
-            if(itemAddon == null){
+            if (addonInstance == null) {
                 return Optional.empty();
             }
 
-            Objects.requireNonNull(itemAddon.getAuthor(), "The expansion author is null!");
-            Objects.requireNonNull(itemAddon.getPrefix(), "The expansion identifier is null!");
-            Objects.requireNonNull(itemAddon.getVersion(), "The expansion version is null!");
+            Objects.requireNonNull(addonInstance.getAuthor(), "The expansion author is null!");
+            Objects.requireNonNull(addonInstance.getPrefix(), "The expansion identifier is null!");
+            Objects.requireNonNull(addonInstance.getVersion(), "The expansion version is null!");
 
-            if (!itemAddon.canRegister()) {
-                plugin.getLogger().warning(() -> "Cannot load expansion %s due to an unknown issue.".formatted(itemAddon.getPrefix()));
-                this.loadingMap.put(itemAddon.getPrefix(),true);
+            if (!addonInstance.canRegister()) {
+                plugin.getLogger().warning(() -> "Cannot load expansion %s due to an unknown issue.".formatted(addonInstance.getPrefix()));
+                this.loadingMap.put(addonInstance.getPrefix(), true);
                 return Optional.empty();
             }
 
-            if(itemAddon instanceof Listener listener) {
+            if (addonInstance instanceof Listener listener) {
                 Bukkit.getPluginManager().registerEvents(listener, plugin);
             }
 
-            this.addonMap.put(itemAddon.getPrefix(),itemAddon);
-            return Optional.of(itemAddon);
+            this.addonMap.put(addonInstance.getPrefix(), addonInstance);
+            return Optional.of(addonInstance);
         } catch (LinkageError | NullPointerException ex) {
             plugin.getLogger().log(Level.SEVERE, "Failed to load addon class %s%s".formatted(addon.getSimpleName(), ex.getMessage()), ex);
         }
@@ -104,7 +116,7 @@ public class AddonManager {
     }
 
     @Nullable
-    public ItemAddon createAddonInstance(@NotNull final Class<? extends ItemAddon > clazz) throws LinkageError {
+    public Addon createAddonInstance(@NotNull final Class<? extends Addon> clazz) throws LinkageError {
         try {
             return clazz.getDeclaredConstructor().newInstance();
         } catch (final Exception ex) {
@@ -118,7 +130,7 @@ public class AddonManager {
     }
 
 
-    public CompletableFuture<List<Class<? extends ItemAddon>>> findLocalAddons() {
+    public CompletableFuture<List<Class<? extends Addon>>> findLocalAddons() {
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".jar"));
         if (files == null) {
             plugin.debug("Could not find any files in folder %s".formatted(folder.getName()));
@@ -130,10 +142,10 @@ public class AddonManager {
                 .collect(Futures.collector());
     }
 
-    public CompletableFuture<Class<? extends ItemAddon>> findAddonInFile(File file) {
+    public CompletableFuture<Class<? extends Addon>> findAddonInFile(File file) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                final Class<? extends ItemAddon> addonClass = FileUtil.findClass(file, ItemAddon.class);
+                final Class<? extends Addon> addonClass = FileUtil.findClass(file, Addon.class);
 
                 if (addonClass == null) {
                     plugin.getLogger().warning("Failed to load addon from file: %s".formatted(file.getName()));
@@ -154,11 +166,11 @@ public class AddonManager {
     private void registerAll() {
         Futures.onMainThread(plugin, findLocalAddons(), (classes, exception) -> {
             if (exception != null) {
-                plugin.getLogger().log(Level.SEVERE,"Failed to load class files of addon.", exception);
+                plugin.getLogger().log(Level.SEVERE, "Failed to load class files of addon.", exception);
                 return;
             }
 
-            final List<ItemAddon> registered = classes.stream()
+            final List<Addon> registered = classes.stream()
                     .filter(Objects::nonNull)
                     .map(this::registerAddon)
                     .filter(Optional::isPresent)
@@ -173,14 +185,14 @@ public class AddonManager {
 
     public void load() {
         registerAll();
-        for(Map.Entry<String,ItemAddon> entry: addonMap.entrySet()) {
-            if(entry.getValue() instanceof Listener listener) {
+        for (Map.Entry<String, Addon> entry : addonMap.entrySet()) {
+            if (entry.getValue() instanceof Listener listener) {
                 Bukkit.getPluginManager().registerEvents(listener, plugin);
             }
         }
     }
 
-    public Map<String, ItemAddon> getAddonMap() {
+    public Map<String, Addon> getAddonMap() {
         return addonMap;
     }
 }
