@@ -1,0 +1,101 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'java'
+}
+
+group = 'com.lapzupi.dev'
+version = '0.2.1'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc-repo'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name = 'placeholderapi'
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+    maven {
+        name = 'aikar'
+        url = 'https://repo.aikar.co/content/groups/aikar/'
+    }
+    maven {
+        name = 'codemc'
+        url = 'https://repo.codemc.org/repository/maven-public/'
+    }
+    maven {
+        name = 'jitpack'
+        url = 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT'
+
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7.1'
+    compileOnly 'me.clip:placeholderapi:2.11.2'
+    compileOnly 'net.kyori:adventure-api:' + adventureVersion
+    compileOnly 'net.kyori:adventure-text-minimessage:' + adventureVersion
+    compileOnly 'net.kyori:adventure-platform-bukkit:' + adventureBukkitVersion
+    compileOnly 'org.spongepowered:configurate-hocon:' + configurateVersion
+
+    implementation 'com.github.sarhatabaot:KrakenCore:1.6.3'
+    implementation 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
+    implementation 'dev.triumphteam:triumph-gui:3.1.4'
+    implementation 'de.tr7zw:item-nbt-api:2.11.0'
+    implementation 'org.bstats:bstats-bukkit:3.0.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+processResources {
+    def props = [
+            "version"                 : version,
+            "name"                    : rootProject.name,
+            "package"                 : rootProject.name.toLowerCase(),
+            "main"                    : rootProject.main,
+            "website"                 : rootProject.website,
+            "description"             : rootProject.description,
+            "adventure.version"       : rootProject.adventureVersion,
+            "adventure.bukkit.version": rootProject.adventureBukkitVersion,
+            "configurate.version"     : rootProject.configurateVersion
+    ]
+
+    inputs.properties props
+    filteringCharset 'UTF-8'
+
+    filesMatching('plugin.yml') {
+        expand props
+    }
+
+}
+
+shadowJar {
+    archiveClassifier.set('')
+
+    relocate 'de.tr7zw.changeme.nbtapi', 'com.lapzupi.dev.configurablemenus.nbt'
+    relocate 'org.bstats', 'com.lapzupi.dev.configurablemenus.metrics'
+    relocate 'co.aikar.command', 'com.lapzupi.dev.configurablemenus.acf'
+    relocate 'co.aikar.locales', 'com.lapzupi.dev.configurablemenus.locales'
+}

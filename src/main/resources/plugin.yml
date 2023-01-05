@@ -1,9 +1,9 @@
-name: ConfigurableMenus
-version: '${project.version}'
-main: com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin
-api-version: 1.18
-description: ${project.description}
-website: ${project.url}
+name: '${name}'
+version: '${version}'
+main: '${group}.${package}.${main}'
+api-version: '${api}'
+description: '${description}'
+website: '${website}'
 softdepend:
   - ItemsAdder
   - Oraxen
