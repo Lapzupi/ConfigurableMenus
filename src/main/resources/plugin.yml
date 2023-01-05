@@ -1,9 +1,9 @@
-name: ConfigurableMenus
-version: '${project.version}'
-main: com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin
-api-version: 1.18
-description: ${project.description}
-website: ${project.url}
+name: '${name}'
+version: '${version}'
+main: '${main}'
+api-version: '${api}'
+description: '${description}'
+website: '${website}'
 softdepend:
   - ItemsAdder
   - Oraxen
@@ -11,7 +11,7 @@ softdepend:
 depend:
   - PlaceholderAPI
 libraries:
-  - net.kyori:adventure-api:${adventure.version}
-  - net.kyori:adventure-platform-bukkit:${adventure.bukkit.version}
-  - net.kyori:adventure-text-minimessage:${adventure.version}
-  - org.spongepowered:configurate-hocon:${configurate.version}
+  - net.kyori:adventure-api:${adventureVersion}
+  - net.kyori:adventure-platform-bukkit:${adventureBukkitVersion}
+  - net.kyori:adventure-text-minimessage:${adventureVersion}
+  - org.spongepowered:configurate-hocon:${configurateVersion}

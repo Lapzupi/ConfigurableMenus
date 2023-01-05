@@ -32,7 +32,7 @@ public class AddonManager {
 
     private final Map<String, Boolean> loadingMap;
 
-    public AddonManager(final ConfigurableMenusPlugin plugin) {
+    public AddonManager(final @NotNull ConfigurableMenusPlugin plugin) {
         this.plugin = plugin;
         this.folder = new File(plugin.getDataFolder(), ADDON_FOLDER);
         this.addonMap = new HashMap<>();
