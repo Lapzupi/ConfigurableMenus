@@ -47,7 +47,7 @@ dependencies {
     implementation 'com.github.sarhatabaot:KrakenCore:1.6.3'
     implementation 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
     implementation 'dev.triumphteam:triumph-gui:3.1.4'
-    implementation 'de.tr7zw:item-nbt-api:2.11.0'
+    implementation 'de.tr7zw:item-nbt-api:2.11.1'
     implementation 'org.bstats:bstats-bukkit:3.0.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'

@@ -20,6 +20,7 @@ public abstract class ItemAddon implements Addon{
     /**
      * Can this addon be registered.
      */
+    @Override
     public boolean canRegister() {
         return (Bukkit.getPluginManager().getPlugin(getPluginName()) != null);
     }
@@ -27,6 +28,7 @@ public abstract class ItemAddon implements Addon{
     /**
      * @return Return a link to the addons project page or download link
      */
+    @Override
     public String getUrl() {
         return EMPTY_URL;
     }
