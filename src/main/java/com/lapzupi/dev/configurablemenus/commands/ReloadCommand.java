@@ -28,8 +28,9 @@ public class ReloadCommand extends BaseCommand {
         @Subcommand("menus")
         @Description("Reload just the menus.")
         @CommandPermission("cmenus.admin.reload.menus")
-        public void onReloadMenus(final CommandSender sender) {
+        public void onReloadMenus(final @NotNull CommandSender sender) {
             plugin.reloadMenus();
+            sender.sendMessage("Reloaded menus.");
         }
 
         @Default
