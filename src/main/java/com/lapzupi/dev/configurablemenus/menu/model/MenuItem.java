@@ -1,5 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
+import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import com.lapzupi.dev.configurablemenus.addons.ActionAddon;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -96,10 +98,16 @@ public class MenuItem {
         private void onClick(final Player player, final List<String> actions) {
             for (String string : actions) {
                 final String prefix = string.split(":", 2)[0];
-                final String args = string.split(":", 2)[1];
+                final String args = ChatUtil.format(player,string.split(":", 2)[1]);
                 ActionAddon actionAddon = this.plugin.getAddonManager().getActionAddon(prefix);
                 if (actionAddon != null) {
-                    actionAddon.onClick(player, args);
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            actionAddon.onClick(player, args);
+                        }
+                    }.runTaskLater(this.plugin,5); //Fix for bypassing plugin functionality.
+                    
                 }
             }
         }
