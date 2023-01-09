@@ -152,4 +152,8 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
     public AddonManager getAddonManager() {
         return addonManager;
     }
+    
+    public SettingsConfigurate getSettings() {
+        return settings;
+    }
 }

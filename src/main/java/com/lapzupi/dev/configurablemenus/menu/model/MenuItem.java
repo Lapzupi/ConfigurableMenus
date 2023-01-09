@@ -98,7 +98,7 @@ public class MenuItem {
         private void onClick(final Player player, final List<String> actions) {
             for (String string : actions) {
                 final String prefix = string.split(":", 2)[0];
-                final String args = ChatUtil.format(player,string.split(":", 2)[1]);
+                final String args = ChatUtil.format(player, string.split(":", 2)[1]);
                 ActionAddon actionAddon = this.plugin.getAddonManager().getActionAddon(prefix);
                 if (actionAddon != null) {
                     new BukkitRunnable() {
@@ -106,7 +106,7 @@ public class MenuItem {
                         public void run() {
                             actionAddon.onClick(player, args);
                         }
-                    }.runTaskLater(this.plugin,5); //Fix for bypassing plugin functionality.
+                    }.runTaskLater(this.plugin, this.plugin.getSettings().clickDelay());
                     
                 }
             }

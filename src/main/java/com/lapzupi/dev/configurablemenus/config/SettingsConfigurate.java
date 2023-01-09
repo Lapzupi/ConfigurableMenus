@@ -14,6 +14,8 @@ public class SettingsConfigurate extends HoconConfigurateFile<ConfigurableMenusP
     private int version;
     private boolean loadExampleMenus;
 
+    
+    private int clickDelay;
     private boolean downloadDefaultAddons;
 
     public SettingsConfigurate(@NotNull final ConfigurableMenusPlugin plugin) throws ConfigurateException {
@@ -26,6 +28,7 @@ public class SettingsConfigurate extends HoconConfigurateFile<ConfigurableMenusP
         this.version = rootNode.node("version").getInt();
         this.loadExampleMenus = rootNode.node("extract-example-menus").getBoolean(true);
         this.downloadDefaultAddons = rootNode.node("download-default-addons").getBoolean(true);
+        this.clickDelay = rootNode.node("click-delay").getInt(5);
     }
 
     @Override
@@ -52,5 +55,9 @@ public class SettingsConfigurate extends HoconConfigurateFile<ConfigurableMenusP
 
     public boolean downloadDefaultAddons() {
         return downloadDefaultAddons;
+    }
+    
+    public int clickDelay() {
+        return clickDelay;
     }
 }
