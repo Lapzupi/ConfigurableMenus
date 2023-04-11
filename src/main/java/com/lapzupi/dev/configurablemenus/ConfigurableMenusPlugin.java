@@ -65,7 +65,7 @@ public final class ConfigurableMenusPlugin extends JavaPlugin {
 
     private void extractDefaultMenus() {
         File menuFolder = new File(getDataFolder(), MENUS);
-        for(String path: FileUtil.getFileNamesInJar(this, zipEntry -> zipEntry.getName().startsWith("menus/") && zipEntry.getName().endsWith(".conf"))) {
+        for(String path: FileUtil.getFileNamesInJar(this.getClass().getProtectionDomain().getCodeSource(), zipEntry -> zipEntry.getName().startsWith("menus/") && zipEntry.getName().endsWith(".conf"))) {
             debug("Path %s".formatted(path));
             final String[] split = path.split("/");
             final String resourcePath = split[0];

@@ -1,7 +1,8 @@
 package com.lapzupi.dev.configurablemenus.config;
 
-import com.github.sarhatabaot.kraken.core.config.HoconConfigurateFile;
-import com.github.sarhatabaot.kraken.core.config.Transformation;
+
+import com.lapzupi.dev.config.HoconConfigurateFile;
+import com.lapzupi.dev.config.Transformation;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import com.lapzupi.dev.configurablemenus.config.serializers.GuiMenuSerializer;
 import com.lapzupi.dev.configurablemenus.config.serializers.MenuItemSerializer;
@@ -16,6 +17,7 @@ import com.lapzupi.dev.configurablemenus.menu.types.PaginatedMenu;
 import com.lapzupi.dev.configurablemenus.menu.types.StorageMenu;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.serialize.TypeSerializerCollection;
 
 /**
  * @author sarhatabaot
@@ -41,17 +43,16 @@ public class MenuConfigurate extends HoconConfigurateFile<ConfigurableMenusPlugi
             default -> this.menu = rootNode.node("menu").get(GuiMenu.class);
         }
     }
-
+    
     @Override
-    protected void builderOptions() {
-        loaderBuilder.defaultOptions(options -> options.serializers(builder ->
-                builder.registerExact(MenuType.class, new MenuTypeSerializer())
-                        .registerExact(MenuItem.class, new MenuItemSerializer())
-                        .registerExact(GuiMenu.class, new GuiMenuSerializer())
-                        .registerExact(PaginatedMenu.class, new PaginatedMenuSerializer())
-                        .registerExact(StorageMenu.class, new StorageMenuSerializer())));
+    protected void builderOptions(TypeSerializerCollection.Builder builder) {
+        builder.registerExact(MenuType.class, new MenuTypeSerializer())
+            .registerExact(MenuItem.class, new MenuItemSerializer())
+            .registerExact(GuiMenu.class, new GuiMenuSerializer())
+            .registerExact(PaginatedMenu.class, new PaginatedMenuSerializer())
+            .registerExact(StorageMenu.class, new StorageMenuSerializer());
     }
-
+    
     @Override
     protected Transformation getTransformation() {
         return null;

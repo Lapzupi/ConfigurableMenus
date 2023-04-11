@@ -1,10 +1,12 @@
 package com.lapzupi.dev.configurablemenus.config;
 
-import com.github.sarhatabaot.kraken.core.config.HoconConfigurateFile;
-import com.github.sarhatabaot.kraken.core.config.Transformation;
+
+import com.lapzupi.dev.config.HoconConfigurateFile;
+import com.lapzupi.dev.config.Transformation;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.serialize.TypeSerializerCollection;
 
 /**
  * @author sarhatabaot
@@ -30,9 +32,9 @@ public class SettingsConfigurate extends HoconConfigurateFile<ConfigurableMenusP
         this.downloadDefaultAddons = rootNode.node("download-default-addons").getBoolean(true);
         this.clickDelay = rootNode.node("click-delay").getInt(5);
     }
-
+    
     @Override
-    protected void builderOptions() {
+    protected void builderOptions(TypeSerializerCollection.Builder builder) {
         //nothing
     }
 
