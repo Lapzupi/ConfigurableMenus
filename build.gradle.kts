@@ -2,7 +2,6 @@ plugins {
     id("java")
     id("net.minecrell.plugin-yml.bukkit") version "0.5.3"
     id("com.github.johnrengelman.shadow") version "8.1.0"
-    id("com.github.sarhatabaot.messages.messages-gradle-plugin") version "1.0.0"
 }
 
 group = "com.lapzupi.dev"
