@@ -62,6 +62,10 @@ tasks {
     
     shadowJar {
         archiveClassifier.set("")
+    
+        dependencies {
+            exclude(dependency("net.kyori:.*:.*"))
+        }
         
         relocate ("de.tr7zw.changeme.nbtapi", "com.lapzupi.dev.configurablemenus.nbt")
         relocate ("org.bstats", "com.lapzupi.dev.configurablemenus.metrics")
