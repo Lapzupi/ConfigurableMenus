@@ -10,7 +10,7 @@ rootProject.name = "ConfigurableMenus"
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            library("paper-api", "io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+            library("paper-api", "io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
             library("vault-api", "com.github.MilkBowl:VaultAPI:1.7.1")
             
             version("adventure", "4.13.1")
@@ -25,7 +25,7 @@ dependencyResolutionManagement {
             library("kraken-core", "com.github.sarhatabaot:KrakenCore:1.7.3")
             library("commands", "co.aikar:acf-paper:0.5.1-SNAPSHOT")
             library("gui", "dev.triumphteam:triumph-gui:3.1.4")
-            library("nbt-api", "de.tr7zw:item-nbt-api:2.11.2")
+            library("nbt-api", "de.tr7zw:item-nbt-api:2.11.3")
             library("bstats", "org.bstats:bstats-bukkit:3.0.1")
             
             library("junit-jupiter", "org.junit.jupiter:junit-jupiter:5.9.0")
