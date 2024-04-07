@@ -1,11 +1,11 @@
 plugins {
     id("java")
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
-    id("com.github.johnrengelman.shadow") version "8.1.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "com.lapzupi.dev"
-version = "0.3.2"
+version = "0.3.3"
 
 repositories {
     mavenCentral()
