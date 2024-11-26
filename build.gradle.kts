@@ -1,7 +1,7 @@
 plugins {
     id("java")
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.github.goooler.shadow") version "8.1.7"
 }
 
 group = "com.lapzupi.dev"
@@ -38,7 +38,8 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
+        vendor.set(JvmVendorSpec.ADOPTIUM)
     }
 }
 
@@ -46,13 +47,13 @@ bukkit {
     name = rootProject.name
     authors = listOf("Lapzupi Development Team", "sarhatabaot")
     main = "com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin"
-    website = "http://dev.lapzupi.com"
+    website = "https://dev.lapzupi.com"
     version = project.version.toString()
     description=  "A configurable menu plugin"
     
     depend = listOf("PlaceholderAPI", "Vault")
     softDepend = listOf("ItemsAdder", "Nova", "HeadsDatabase")
-    apiVersion = "1.19"
+    apiVersion = "1.20"
 }
 
 tasks {

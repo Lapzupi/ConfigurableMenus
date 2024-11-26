@@ -1,6 +1,5 @@
 package com.lapzupi.dev.configurablemenus.config.serializers;
 
-import com.github.sarhatabaot.kraken.core.logging.LoggerUtil;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import com.lapzupi.dev.configurablemenus.menu.EmptyMenu;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
