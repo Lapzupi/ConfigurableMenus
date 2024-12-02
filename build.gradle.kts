@@ -1,21 +1,12 @@
 plugins {
-    id("java")
-    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
-    id("io.github.goooler.shadow") version "8.1.7"
+    java
+    `maven-publish`
+    alias(libs.plugins.bukkit.yml)
+    alias(libs.plugins.shadow)
 }
 
-group = "com.lapzupi.dev"
-version = "0.3.3"
-
-repositories {
-    mavenCentral()
-    maven ("https://repo.papermc.io/repository/maven-public/")
-    maven ( "https://oss.sonatype.org/content/groups/public/")
-    maven ("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven ("https://repo.aikar.co/content/groups/aikar/")
-    maven ("https://repo.codemc.org/repository/maven-public/")
-    maven ("https://jitpack.io")
-}
+group = "com.lapzupi.dev.configurablemenus"
+version = "0.4.0"
 
 dependencies {
     compileOnly(libs.paper.api)
@@ -27,11 +18,11 @@ dependencies {
     library(libs.adventure.minimessage)
     library(libs.adventure.bukkit)
     library(libs.configurate.hocon)
-    
-    implementation(libs.kraken.core)
-    implementation(libs.commands)
-    implementation(libs.gui)
+
+    implementation(libs.commands.paper)
+    implementation(libs.triumph.gui)
     implementation(libs.bstats)
+    implementation(libs.bundles.lapzupi.utils)
     
     testImplementation(libs.junit.jupiter)
 }
@@ -41,6 +32,7 @@ java {
         languageVersion.set(JavaLanguageVersion.of(21))
         vendor.set(JvmVendorSpec.ADOPTIUM)
     }
+    withSourcesJar()
 }
 
 bukkit {
@@ -53,7 +45,19 @@ bukkit {
     
     depend = listOf("PlaceholderAPI", "Vault")
     softDepend = listOf("ItemsAdder", "Nova", "HeadsDatabase")
-    apiVersion = "1.20"
+    apiVersion = "1.21"
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = groupId
+            artifactId = artifactId
+            version = version
+
+            from(components["java"])
+        }
+    }
 }
 
 tasks {

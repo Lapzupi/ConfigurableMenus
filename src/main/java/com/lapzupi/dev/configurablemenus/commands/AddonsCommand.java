@@ -5,7 +5,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
-import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
+import com.lapzupi.dev.chat.ChatUtil;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import com.lapzupi.dev.configurablemenus.addons.ActionAddon;
 import com.lapzupi.dev.configurablemenus.addons.Addon;

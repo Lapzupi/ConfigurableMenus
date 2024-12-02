@@ -1,6 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
-import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
+import com.lapzupi.dev.chat.ChatUtil;
 import dev.triumphteam.gui.components.exception.GuiException;
 import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.GuiItem;

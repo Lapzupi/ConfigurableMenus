@@ -1,6 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.types;
 
-import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
+import com.lapzupi.dev.chat.ChatUtil;
 import com.lapzupi.dev.configurablemenus.menu.model.Menu;
 import com.lapzupi.dev.configurablemenus.menu.model.MenuItem;
 import com.lapzupi.dev.configurablemenus.menu.model.MenuType;

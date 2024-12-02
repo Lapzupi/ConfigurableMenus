@@ -1,6 +1,6 @@
 package com.lapzupi.dev.configurablemenus.menu.model;
 
-import com.github.sarhatabaot.kraken.core.chat.ChatUtil;
+import com.lapzupi.dev.chat.ChatUtil;
 import com.lapzupi.dev.configurablemenus.ConfigurableMenusPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
