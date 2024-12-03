@@ -1,18 +1,19 @@
 plugins {
-    java
+    `java-library`
     `maven-publish`
     alias(libs.plugins.bukkit.yml)
     alias(libs.plugins.shadow)
 }
 
 group = "com.lapzupi.dev.configurablemenus"
-version = "0.4.0"
+version = "0.4.2"
 
 dependencies {
     compileOnly(libs.paper.api)
 
     compileOnly(libs.vault.api)
     compileOnly(libs.placeholder.api)
+
 
     library(libs.adventure.api)
     library(libs.adventure.minimessage)
@@ -23,6 +24,7 @@ dependencies {
     implementation(libs.triumph.gui)
     implementation(libs.bstats)
     implementation(libs.bundles.lapzupi.utils)
+    api(libs.nbt.api)
     
     testImplementation(libs.junit.jupiter)
 }
